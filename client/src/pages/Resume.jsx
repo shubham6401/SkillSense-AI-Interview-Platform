@@ -134,31 +134,31 @@ function Resume() {
         <div className="min-h-screen bg-slate-50 flex flex-col">
             <Navbar />
 
-            <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+            <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
                 {/* Header Banner */}
-                <div className="text-center max-w-2xl mx-auto mb-10">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">
+                <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
                         <Sparkles size={14} />
                         Skill Extraction & AI Tuning
                     </div>
-                    <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
                         Upload Your Resume
                     </h1>
-                    <p className="mt-3 text-slate-600 text-base sm:text-lg">
+                    <p className="mt-2 sm:mt-3 text-slate-600 text-xs sm:text-base leading-relaxed px-2">
                         Upload your PDF resume to automatically extract your tech stack and generate personalized AI mock interview questions.
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
                     {/* Left: Upload Dropzone Card */}
                     <div className="lg:col-span-6 flex flex-col">
-                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-between">
+                        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-between">
                             <div>
-                                <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
-                                    <FileText className="text-blue-600" size={22} />
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
+                                    <FileText className="text-blue-600" size={20} />
                                     {currentResume ? "Update Resume" : "Select Resume"}
                                 </h2>
-                                <p className="text-xs text-slate-500 mb-6">
+                                <p className="text-xs text-slate-500 mb-4 sm:mb-6">
                                     Upload in PDF format (Max 10MB)
                                 </p>
 

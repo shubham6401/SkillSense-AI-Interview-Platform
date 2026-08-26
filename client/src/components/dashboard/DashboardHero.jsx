@@ -6,31 +6,31 @@ function DashboardHero({ user, dashboard }) {
     const readiness = Number(dashboard?.placementReadiness) || 0;
 
     return (
-        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-8 sm:p-10 shadow-xl border border-slate-800">
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-5 sm:p-8 md:p-10 shadow-xl border border-slate-800">
             {/* Background Glow */}
             <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+            <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 sm:gap-8">
                 {/* Left Text */}
                 <div className="max-w-2xl">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4">
                         <Sparkles size={13} />
                         AI Placement Readiness System
                     </div>
 
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                    <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
                         Welcome Back, <span className="gradient-text bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">{user?.name || "Candidate"}</span> 👋
                     </h1>
 
-                    <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
+                    <p className="mt-3 sm:mt-4 text-xs sm:text-base text-slate-300 leading-relaxed max-w-xl">
                         Sharpen your technical interview responses, get instant Gemini AI evaluation, and track your placement readiness with deep analytics.
                     </p>
 
-                    <div className="mt-8 flex flex-wrap items-center gap-3">
+                    <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                         <button
                             onClick={() => navigate("/interview")}
-                            className="px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center gap-2"
+                            className="px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2"
                         >
                             <Mic size={16} />
                             Start New AI Interview
@@ -39,7 +39,7 @@ function DashboardHero({ user, dashboard }) {
 
                         <button
                             onClick={() => navigate("/resume")}
-                            className="px-6 py-3.5 bg-white/10 hover:bg-white/15 text-white border border-white/15 text-xs font-bold rounded-xl backdrop-blur-xs transition"
+                            className="px-6 py-3.5 bg-white/10 hover:bg-white/15 text-white border border-white/15 text-xs font-bold rounded-xl backdrop-blur-xs transition flex items-center justify-center"
                         >
                             Manage Resume & Skills
                         </button>

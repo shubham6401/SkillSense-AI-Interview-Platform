@@ -6,15 +6,15 @@ function ResumeCard({ resume }) {
     const isUploaded = Boolean(resume && resume.uploaded);
 
     return (
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 sm:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3.5">
                     <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100">
                         <FileText size={24} />
                     </div>
                     <div>
-                        <div className="flex items-center gap-2">
-                            <h2 className="text-xl font-bold text-slate-900">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
                                 Active Resume & Skills
                             </h2>
                             {isUploaded ? (
@@ -37,10 +37,10 @@ function ResumeCard({ resume }) {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
                     <button
                         onClick={() => navigate("/resume")}
-                        className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5"
+                        className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5"
                     >
                         <Upload size={14} />
                         {isUploaded ? "Update Resume" : "Upload Resume"}
@@ -49,7 +49,7 @@ function ResumeCard({ resume }) {
                     <button
                         onClick={() => navigate("/interview")}
                         disabled={!isUploaded}
-                        className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-1.5"
+                        className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5"
                     >
                         <Mic size={14} />
                         Start Interview
