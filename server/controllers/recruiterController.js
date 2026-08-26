@@ -184,6 +184,7 @@ const updateShortlist = async (req, res) => {
 
         return res.status(200).json({
             message: `Candidate marked as ${status}. Notification sent to candidate.`,
+            status: updated.status,
             shortlist: updated,
         });
     } catch (err) {

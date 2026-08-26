@@ -137,7 +137,11 @@ async function generateReport(sessionId, userId, userRole = "candidate") {
             placementReadiness,
 
             overallAssessment,
+            executiveAssessment: overallAssessment,
             recommendation,
+
+            user: session.userId,
+            userId: session.userId,
 
             answers: session.answers,
         };
