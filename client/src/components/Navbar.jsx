@@ -14,14 +14,18 @@ import {
     X,
     ChevronDown,
     Sparkles,
+    Sun,
+    Moon,
 } from "lucide-react";
 import NotificationBell from "./NotificationBell";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const dropdownRef = useRef(null);
@@ -105,8 +109,17 @@ export default function Navbar() {
                     })}
                 </nav>
 
-                {/* Right Profile & Mobile Menu Toggle */}
-                <div className="flex items-center gap-2.5 sm:gap-3">
+                {/* Right Profile & Actions */}
+                <div className="flex items-center gap-2 sm:gap-3">
+                    {/* Theme Toggle */}
+                    <button
+                        onClick={toggleTheme}
+                        title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+                        className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition border border-slate-200"
+                    >
+                        {theme === "dark" ? <Sun size={17} className="text-amber-500" /> : <Moon size={17} className="text-slate-600" />}
+                    </button>
+
                     {/* Notification Bell (for candidates) */}
                     {!isRecruiter && <NotificationBell />}
 

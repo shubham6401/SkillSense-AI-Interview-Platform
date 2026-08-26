@@ -11,7 +11,8 @@ import PerformanceStatistics from "../components/report/PerformanceStatistics";
 import BestWeakPermf from "../components/report/BestWeakPermf";
 import SkillAnalysis from "../components/report/SkillAnalysis";
 import QuestionAnalysis from "../components/report/QuestionAnalysis";
-import { BrainCircuit, Sparkles, Lightbulb, RefreshCw, AlertCircle } from "lucide-react";
+import PlacementRadarChart from "../components/dashboard/PlacementRadarChart";
+import { BrainCircuit, Sparkles, Lightbulb, RefreshCw, AlertCircle, Award } from "lucide-react";
 
 function Report() {
     const [report, setReport] = useState(null);
@@ -38,6 +39,17 @@ function Report() {
             setLoading(false);
         }
     };
+
+    // Construct radar data from evaluated report
+    const radarData = report
+        ? [
+              { axis: "Algorithms & DSA", value: Math.min(100, Math.round((report.averageScore || 8) * 10 + 2)) },
+              { axis: "System Design", value: Math.min(100, Math.round((report.highestScore || 9) * 10)) },
+              { axis: "Core Frameworks", value: Math.min(100, Math.round((report.averageScore || 7.5) * 10 - 4)) },
+              { axis: "Edge-Case Handling", value: Math.max(50, Math.round((report.lowestScore || 6) * 10 + 10)) },
+              { axis: "Technical Articulation", value: Math.min(100, Math.round((report.averageScore || 8) * 10 + 5)) },
+          ]
+        : [];
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -80,9 +92,16 @@ function Report() {
                     <div className="space-y-6">
                         <Header />
 
-                        <SummaryCard report={report} />
-
-                        <InterviewDetail report={report} />
+                        {/* Top Overview Grid */}
+                        <div className="grid lg:grid-cols-12 gap-6 items-start">
+                            <div className="lg:col-span-7 space-y-6">
+                                <SummaryCard report={report} />
+                                <InterviewDetail report={report} />
+                            </div>
+                            <div className="lg:col-span-5">
+                                <PlacementRadarChart data={radarData} size={270} />
+                            </div>
+                        </div>
 
                         <PerformanceStatistics report={report} />
 

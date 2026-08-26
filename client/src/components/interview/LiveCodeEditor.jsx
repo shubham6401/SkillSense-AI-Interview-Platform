@@ -12,52 +12,58 @@ import {
     HardDrive,
     Copy,
     Check,
+    BookOpen,
+    Building2,
 } from "lucide-react";
 import { executeCode, analyzeComplexity } from "../../services/interviewService";
 import BigOComplexityModal from "./BigOComplexityModal";
 
-const DEFAULT_TEMPLATES = {
-    python: `# Python 3.10 Solution
-def solve(arr, target):
+const FAANG_PROBLEMS = [
+    {
+        id: "two_sum",
+        name: "Meta / Google: Two Sum (Hash Table O(N))",
+        templates: {
+            python: `# Problem: Two Sum (Meta / Google)
+# Find two numbers that add up to target.
+def two_sum(nums, target):
     seen = {}
-    for i, num in enumerate(arr):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
         seen[num] = i
     return []
 
-# Test driver
-print(solve([2, 7, 11, 15], 9))
+# Test execution
+print(two_sum([2, 7, 11, 15], 9))
 `,
-    javascript: `// JavaScript (Node.js) Solution
-function solve(arr, target) {
+            javascript: `// Problem: Two Sum (Meta / Google)
+function twoSum(nums, target) {
     const seen = new Map();
-    for (let i = 0; i < arr.length; i++) {
-        const comp = target - arr[i];
-        if (seen.has(comp)) {
-            return [seen.get(comp), i];
+    for (let i = 0; i < nums.length; i++) {
+        const diff = target - nums[i];
+        if (seen.has(diff)) {
+            return [seen.get(diff), i];
         }
-        seen.set(arr[i], i);
+        seen.set(nums[i], i);
     }
     return [];
 }
 
-// Test driver
-console.log(solve([2, 7, 11, 15], 9));
+console.log(twoSum([2, 7, 11, 15], 9));
 `,
-    cpp: `// C++ (GCC 10.2) Solution
+            cpp: `// Problem: Two Sum (Meta / Google)
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 using namespace std;
 
-vector<int> solve(vector<int>& nums, int target) {
+vector<int> twoSum(vector<int>& nums, int target) {
     unordered_map<int, int> seen;
     for (int i = 0; i < nums.size(); ++i) {
-        int comp = target - nums[i];
-        if (seen.count(comp)) {
-            return {seen[comp], i};
+        int diff = target - nums[i];
+        if (seen.count(diff)) {
+            return {seen[diff], i};
         }
         seen[nums[i]] = i;
     }
@@ -66,21 +72,21 @@ vector<int> solve(vector<int>& nums, int target) {
 
 int main() {
     vector<int> nums = {2, 7, 11, 15};
-    vector<int> res = solve(nums, 9);
+    vector<int> res = twoSum(nums, 9);
     cout << "[" << res[0] << ", " << res[1] << "]" << endl;
     return 0;
 }
 `,
-    java: `// Java (OpenJDK 15) Solution
+            java: `// Problem: Two Sum (Meta / Google)
 import java.util.*;
 
 public class Main {
-    public static int[] solve(int[] nums, int target) {
+    public static int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> seen = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            int comp = target - nums[i];
-            if (seen.containsKey(comp)) {
-                return new int[] { seen.get(comp), i };
+            int diff = target - nums[i];
+            if (seen.containsKey(diff)) {
+                return new int[] { seen.get(diff), i };
             }
             seen.put(nums[i], i);
         }
@@ -88,20 +94,20 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int[] res = solve(new int[] {2, 7, 11, 15}, 9);
+        int[] res = twoSum(new int[] {2, 7, 11, 15}, 9);
         System.out.println(Arrays.toString(res));
     }
 }
 `,
-    go: `// Go 1.16 Solution
+            go: `// Problem: Two Sum (Meta / Google)
 package main
 import "fmt"
 
-func solve(nums []int, target int) []int {
+func twoSum(nums []int, target int) []int {
     seen := make(map[int]int)
     for i, num := range nums {
-        comp := target - num
-        if idx, ok := seen[comp]; ok {
+        diff := target - num
+        if idx, ok := seen[diff]; ok {
             return []int{idx, i}
         }
         seen[num] = i
@@ -110,18 +116,235 @@ func solve(nums []int, target int) []int {
 }
 
 func main() {
-    fmt.Println(solve([]int{2, 7, 11, 15}, 9))
+    fmt.Println(twoSum([]int{2, 7, 11, 15}, 9))
 }
 `,
+        },
+    },
+    {
+        id: "lru_cache",
+        name: "Google: LRU Cache (Hash Map + Doubly Linked List)",
+        templates: {
+            python: `# Problem: LRU Cache (Google)
+# Get and Put in O(1) time complexity.
+class Node:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = {}
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next = self.right
+        self.right.prev = self.left
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            # Move to most recent
+            node.prev.next = node.next
+            node.next.prev = node.prev
+            prev_tail = self.right.prev
+            prev_tail.next = node
+            node.prev = prev_tail
+            node.next = self.right
+            self.right.prev = node
+            return node.val
+        return -1
+
+# Test driver
+lru = LRUCache(2)
+print("Initialized LRU Cache with capacity 2")
+`,
+            javascript: `// Problem: LRU Cache (Google)
+class LRUCache {
+    constructor(capacity) {
+        this.capacity = capacity;
+        this.cache = new Map();
+    }
+
+    get(key) {
+        if (!this.cache.has(key)) return -1;
+        const val = this.cache.get(key);
+        this.cache.delete(key);
+        this.cache.set(key, val);
+        return val;
+    }
+
+    put(key, value) {
+        if (this.cache.has(key)) {
+            this.cache.delete(key);
+        } else if (this.cache.size >= this.capacity) {
+            const oldestKey = this.cache.keys().next().value;
+            this.cache.delete(oldestKey);
+        }
+        this.cache.set(key, value);
+    }
+}
+
+const lru = new LRUCache(2);
+lru.put(1, 100);
+console.log("LRU Get Key 1:", lru.get(1));
+`,
+            cpp: `// Problem: LRU Cache (Google)
+#include <iostream>
+#include <unordered_map>
+#include <list>
+using namespace std;
+
+class LRUCache {
+    int cap;
+    list<pair<int, int>> lru;
+    unordered_map<int, list<pair<int, int>>::iterator> mp;
+public:
+    LRUCache(int capacity) : cap(capacity) {}
+    
+    int get(int key) {
+        if (mp.find(key) == mp.end()) return -1;
+        lru.splice(lru.begin(), lru, mp[key]);
+        return mp[key]->second;
+    }
 };
+
+int main() {
+    LRUCache cache(2);
+    cout << "LRU Cache Initialized with capacity 2" << endl;
+    return 0;
+}
+`,
+            java: `// Problem: LRU Cache (Google)
+import java.util.*;
+
+public class Main {
+    static class LRUCache extends LinkedHashMap<Integer, Integer> {
+        private int capacity;
+        public LRUCache(int capacity) {
+            super(capacity, 0.75f, true);
+            this.capacity = capacity;
+        }
+        public int get(int key) {
+            return super.getOrDefault(key, -1);
+        }
+        protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            return size() > capacity;
+        }
+    }
+
+    public static void main(String[] args) {
+        LRUCache lru = new LRUCache(2);
+        lru.put(1, 100);
+        System.out.println("LRU Cache Value: " + lru.get(1));
+    }
+}
+`,
+            go: `// Problem: LRU Cache (Google)
+package main
+import "fmt"
+
+func main() {
+    fmt.Println("LRU Cache Structure initialized in Go")
+}
+`,
+        },
+    },
+    {
+        id: "rate_limiter",
+        name: "Stripe: Token Bucket Rate Limiter",
+        templates: {
+            python: `# Problem: Token Bucket Rate Limiter (Stripe / Distributed Systems)
+import time
+
+class TokenBucket:
+    def __init__(self, capacity: int, refill_rate: float):
+        self.capacity = capacity
+        self.tokens = capacity
+        self.refill_rate = refill_rate
+        self.last_refill = time.time()
+
+    def allow_request(self, tokens=1) -> bool:
+        now = time.time()
+        elapsed = now - self.last_refill
+        self.tokens = min(self.capacity, self.tokens + elapsed * self.refill_rate)
+        self.last_refill = now
+
+        if self.tokens >= tokens:
+            self.tokens -= tokens
+            return True
+        return False
+
+# Test driver
+bucket = TokenBucket(capacity=5, refill_rate=1.0)
+print("Request 1 Allowed:", bucket.allow_request())
+`,
+            javascript: `// Problem: Token Bucket Rate Limiter (Stripe)
+class TokenBucket {
+    constructor(capacity, refillRate) {
+        this.capacity = capacity;
+        this.tokens = capacity;
+        this.refillRate = refillRate; // tokens per second
+        this.lastRefill = Date.now();
+    }
+
+    allowRequest(cost = 1) {
+        const now = Date.now();
+        const elapsed = (now - this.lastRefill) / 1000;
+        this.tokens = Math.min(this.capacity, this.tokens + elapsed * this.refillRate);
+        this.lastRefill = now;
+
+        if (this.tokens >= cost) {
+            this.tokens -= cost;
+            return true;
+        }
+        return false;
+    }
+}
+
+const limiter = new TokenBucket(5, 1);
+console.log("Request 1 Allowed:", limiter.allowRequest());
+`,
+            cpp: `// Problem: Token Bucket Rate Limiter (Stripe)
+#include <iostream>
+#include <chrono>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    cout << "Token Bucket Rate Limiter initialized." << endl;
+    return 0;
+}
+`,
+            java: `// Problem: Token Bucket Rate Limiter (Stripe)
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Token Bucket Rate Limiter active.");
+    }
+}
+`,
+            go: `// Problem: Token Bucket Rate Limiter (Stripe)
+package main
+import "fmt"
+
+func main() {
+    fmt.Println("Token Bucket Rate Limiter initialized in Go")
+}
+`,
+        },
+    },
+];
 
 export default function LiveCodeEditor({
     questionText = "Algorithmic Problem",
     onCodeChange,
     codeValue,
 }) {
+    const [selectedProblemId, setSelectedProblemId] = useState("two_sum");
     const [language, setLanguage] = useState("python");
-    const [code, setCode] = useState(codeValue || DEFAULT_TEMPLATES.python);
+    
+    // Initial code
+    const initialTemplate = FAANG_PROBLEMS[0].templates.python;
+    const [code, setCode] = useState(codeValue || initialTemplate);
     const [executing, setExecuting] = useState(false);
     const [executionResult, setExecutionResult] = useState(null);
     const [activeConsoleTab, setActiveConsoleTab] = useState("terminal"); // 'terminal' | 'testcases'
@@ -133,9 +356,19 @@ export default function LiveCodeEditor({
 
     const [copied, setCopied] = useState(false);
 
+    const handleProblemChange = (probId) => {
+        setSelectedProblemId(probId);
+        const prob = FAANG_PROBLEMS.find((p) => p.id === probId);
+        if (prob && prob.templates[language]) {
+            setCode(prob.templates[language]);
+            if (onCodeChange) onCodeChange(prob.templates[language]);
+        }
+    };
+
     const handleLanguageChange = (newLang) => {
         setLanguage(newLang);
-        const template = DEFAULT_TEMPLATES[newLang] || DEFAULT_TEMPLATES.python;
+        const prob = FAANG_PROBLEMS.find((p) => p.id === selectedProblemId) || FAANG_PROBLEMS[0];
+        const template = prob.templates[newLang] || prob.templates.python;
         setCode(template);
         if (onCodeChange) onCodeChange(template);
     };
@@ -201,12 +434,30 @@ export default function LiveCodeEditor({
     return (
         <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
             {/* Editor Toolbar */}
-            <div className="bg-slate-950 px-4 sm:px-6 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
+            <div className="bg-slate-950 px-4 sm:px-6 py-3.5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center gap-2">
                         <div className="w-3 h-3 rounded-full bg-rose-500/80" />
                         <div className="w-3 h-3 rounded-full bg-amber-500/80" />
                         <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                    </div>
+
+                    <span className="text-slate-600">|</span>
+
+                    {/* FAANG Problem Template Selector */}
+                    <div className="flex items-center gap-1.5">
+                        <BookOpen size={14} className="text-indigo-400" />
+                        <select
+                            value={selectedProblemId}
+                            onChange={(e) => handleProblemChange(e.target.value)}
+                            className="bg-slate-900 border border-slate-700 text-indigo-300 text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 max-w-[220px] sm:max-w-xs truncate"
+                        >
+                            {FAANG_PROBLEMS.map((p) => (
+                                <option key={p.id} value={p.id}>
+                                    {p.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <span className="text-slate-600">|</span>
