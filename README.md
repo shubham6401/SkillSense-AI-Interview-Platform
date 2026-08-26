@@ -139,14 +139,40 @@ npm install
 npm run dev
 ```
 
-### 4. Running the Automated Test Suite
+### 4. Running the Automated Full E2E Test Suite
 ```bash
-npm --prefix server test
+node scratch/e2e_full_system_test.js
 ```
 
 ---
 
-## 💼 Resume Description
+## 🌐 1-Click Cloud Deployment & Hosting Guide
+
+### Deploying Frontend to Vercel (Recommended)
+1. Push your repository to GitHub.
+2. Go to [Vercel Dashboard](https://vercel.com) $\rightarrow$ **Add New Project** $\rightarrow$ Import `SkillSense-AI-Interview-Platform`.
+3. Set **Root Directory** to `client`.
+4. Framework Preset: **Vite**.
+5. Add Environment Variable:
+   - `VITE_API_URL`: `https://your-backend-service.onrender.com/api`
+6. Click **Deploy**! (Automatic SPA URL rewriting is handled by [`client/vercel.json`](file:///Users/shubhamkrgupta/mmmut%20programs/web%20designing/projects/project%20interview%20platform/client/vercel.json)).
+
+### Deploying Backend to Render or Railway
+1. Go to [Render Dashboard](https://render.com) or [Railway](https://railway.app).
+2. Create a new **Web Service** pointing to your GitHub repository.
+3. Set **Root Directory** to `server`.
+4. Build Command: `npm install`
+5. Start Command: `npm start`
+6. Configure Environment Variables:
+   - `PORT`: `8080`
+   - `MONGO_URI`: `your_mongodb_atlas_connection_string`
+   - `JWT_SECRET`: `your_jwt_secret`
+   - `GEMINI_API_KEY`: `your_gemini_api_key`
+7. Click **Deploy Web Service**!
+
+---
+
+## 💼 Resume & LinkedIn Project Summary
 
 > **SkillSense.AI — Full-Stack Technical Interview & Code Execution Platform**
 > * *Architected an end-to-end technical interview platform using **React 19, Node.js, Express, and MongoDB**, supporting dynamic algorithmic question generation and company-specific calibration for Google, FAANG, and Tier-1 tech firms.*
