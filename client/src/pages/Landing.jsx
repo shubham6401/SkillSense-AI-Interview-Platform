@@ -34,6 +34,7 @@ import {
     X,
     Sun,
     Moon,
+    Menu,
 } from "lucide-react";
 import { login, socialLogin } from "../services/authService";
 import SystemDesignWhiteboard from "../components/interview/SystemDesignWhiteboard";
@@ -44,6 +45,7 @@ export default function Landing() {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
     const isDark = theme === "dark";
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const user = JSON.parse(localStorage.getItem("user") || "null");
     const isAuthenticated = Boolean(localStorage.getItem("token"));
@@ -353,7 +355,7 @@ int main() {
                     </nav>
 
                     {/* Auth CTAs & Theme Toggle */}
-                    <div className="flex items-center gap-2.5 sm:gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         {/* Day / Night Theme Toggle Button */}
                         <button
                             type="button"
@@ -375,16 +377,16 @@ int main() {
                         {isAuthenticated ? (
                             <Link
                                 to={user?.role === "recruiter" ? "/recruiter/dashboard" : "/dashboard"}
-                                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-extrabold rounded-xl shadow-md shadow-blue-600/30 transition flex items-center gap-1.5"
+                                className="hidden sm:flex px-4 sm:px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-extrabold rounded-xl shadow-md shadow-blue-600/30 transition items-center gap-1.5"
                             >
-                                <span>Go to Dashboard</span>
+                                <span>Dashboard</span>
                                 <ArrowRight size={14} />
                             </Link>
                         ) : (
                             <>
                                 <Link
                                     to="/login"
-                                    className={`px-4 py-2.5 text-xs font-bold rounded-xl transition ${
+                                    className={`hidden sm:inline-flex px-3.5 py-2 text-xs font-bold rounded-xl transition ${
                                         isDark
                                             ? "text-slate-300 hover:text-white hover:bg-slate-900"
                                             : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
@@ -394,22 +396,153 @@ int main() {
                                 </Link>
                                 <button
                                     onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
-                                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5"
+                                    className="px-3.5 sm:px-5 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold rounded-xl shadow-md shadow-blue-600/30 transition flex items-center gap-1.5"
                                 >
-                                    <span>Demo Candidate</span>
+                                    <span>Demo <span className="hidden sm:inline">Candidate</span></span>
                                     <ArrowRight size={14} />
                                 </button>
                                 <button
                                     onClick={() => handleLoginRecruiter("sarah.google@google.com")}
-                                    className="hidden sm:flex px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold rounded-xl shadow-lg shadow-indigo-600/30 transition items-center gap-1.5"
+                                    className="hidden md:flex px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold rounded-xl shadow-md shadow-indigo-600/30 transition items-center gap-1.5"
                                 >
                                     <Building2 size={14} />
                                     <span>Demo Recruiter</span>
                                 </button>
                             </>
                         )}
+
+                        {/* Mobile Hamburger Button */}
+                        <button
+                            type="button"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            className={`md:hidden p-2 rounded-xl border transition ${
+                                isDark
+                                    ? "text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700"
+                                    : "text-slate-700 hover:text-slate-900 hover:bg-slate-100 border-slate-200"
+                            }`}
+                            aria-label="Toggle navigation menu"
+                        >
+                            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                        </button>
                     </div>
                 </div>
+
+                {/* Mobile Navigation Drawer Sheet */}
+                {mobileMenuOpen && (
+                    <div
+                        className={`md:hidden border-t px-4 py-5 space-y-3 shadow-2xl animate-in slide-in-from-top-2 duration-150 ${
+                            isDark
+                                ? "bg-slate-900 border-slate-800 text-slate-100"
+                                : "bg-white border-slate-200 text-slate-900"
+                        }`}
+                    >
+                        <div className="flex flex-col space-y-2">
+                            <a
+                                href="#features"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition ${
+                                    isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-50 text-slate-700"
+                                }`}
+                            >
+                                ⚡ Platform Features
+                            </a>
+                            <a
+                                href="#playground"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition ${
+                                    isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-50 text-slate-700"
+                                }`}
+                            >
+                                💻 Live Code Compiler
+                            </a>
+                            <a
+                                href="#system-design"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition ${
+                                    isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-50 text-slate-700"
+                                }`}
+                            >
+                                🏗️ System Design Whiteboard
+                            </a>
+                            <a
+                                href="#readiness-calc"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition ${
+                                    isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-50 text-slate-700"
+                                }`}
+                            >
+                                🎯 Placement Readiness Dial
+                            </a>
+                            <a
+                                href="#recruiters"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition text-indigo-600 ${
+                                    isDark ? "hover:bg-slate-800" : "hover:bg-indigo-50"
+                                }`}
+                            >
+                                🏢 Recruiter Talent Suite
+                            </a>
+                            <a
+                                href="#faq"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`px-3 py-2 rounded-xl text-xs font-bold transition ${
+                                    isDark ? "hover:bg-slate-800 text-slate-300" : "hover:bg-slate-50 text-slate-700"
+                                }`}
+                            >
+                                ❓ Frequently Asked Questions
+                            </a>
+                        </div>
+
+                        <div className={`border-t pt-3 space-y-2 ${isDark ? "border-slate-800" : "border-slate-100"}`}>
+                            {isAuthenticated ? (
+                                <Link
+                                    to={user?.role === "recruiter" ? "/recruiter/dashboard" : "/dashboard"}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2"
+                                >
+                                    <span>Enter Dashboard</span>
+                                    <ArrowRight size={14} />
+                                </Link>
+                            ) : (
+                                <>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        <button
+                                            onClick={() => {
+                                                setMobileMenuOpen(false);
+                                                handleLoginCandidate("shubham.architect@gmail.com");
+                                            }}
+                                            className="py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5"
+                                        >
+                                            <Sparkles size={13} />
+                                            <span>Candidate</span>
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setMobileMenuOpen(false);
+                                                handleLoginRecruiter("sarah.google@google.com");
+                                            }}
+                                            className="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5"
+                                        >
+                                            <Building2 size={13} />
+                                            <span>Recruiter</span>
+                                        </button>
+                                    </div>
+                                    <Link
+                                        to="/login"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className={`w-full py-2.5 border rounded-xl text-xs font-bold flex items-center justify-center transition ${
+                                            isDark
+                                                ? "border-slate-700 bg-slate-800 text-slate-200"
+                                                : "border-slate-200 bg-slate-50 text-slate-800"
+                                        }`}
+                                    >
+                                        Sign In to Existing Account
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
             </header>
 
             {/* HERO SECTION */}
@@ -437,7 +570,7 @@ int main() {
                     </div>
 
                     <h1
-                        className={`text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-5xl mx-auto leading-[1.12] ${
+                        className={`text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-5xl mx-auto leading-[1.15] sm:leading-[1.12] ${
                             isDark ? "text-white" : "text-slate-900"
                         }`}
                     >
@@ -448,7 +581,7 @@ int main() {
                     </h1>
 
                     <p
-                        className={`mt-6 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed ${
+                        className={`mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto leading-relaxed px-2 ${
                             isDark ? "text-slate-400" : "text-slate-600"
                         }`}
                     >
@@ -456,10 +589,10 @@ int main() {
                     </p>
 
                     {/* CTAs */}
-                    <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                    <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
                         <button
                             onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
-                            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-sm rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center gap-2"
+                            className="px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
                         >
                             <span>Start Free Mock Interview</span>
                             <ArrowRight size={16} />
@@ -467,38 +600,38 @@ int main() {
 
                         <a
                             href="#playground"
-                            className={`px-8 py-4 font-bold text-sm rounded-2xl border transition flex items-center gap-2 ${
+                            className={`px-6 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 ${
                                 isDark
                                     ? "bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800"
                                     : "bg-white hover:bg-slate-100 text-slate-800 border-slate-200 shadow-xs"
                             }`}
                         >
-                            <Play size={15} fill="currentColor" />
+                            <Play size={14} fill="currentColor" />
                             <span>Try Live Compiler</span>
                         </a>
 
                         <a
                             href="#recruiters"
-                            className={`px-6 py-4 font-bold text-sm rounded-2xl border transition flex items-center gap-2 ${
+                            className={`px-6 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 ${
                                 isDark
                                     ? "bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 border-purple-800/60"
                                     : "bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 shadow-xs"
                             }`}
                         >
-                            <Building2 size={16} />
+                            <Building2 size={15} />
                             <span>Recruiter Talent Suite</span>
                         </a>
                     </div>
 
                     {/* Audio Question Preview Pill */}
                     <div
-                        className={`mt-10 inline-flex items-center gap-3 p-2.5 px-4 rounded-2xl border shadow-md ${
+                        className={`mt-8 sm:mt-10 inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 sm:px-4 rounded-2xl border shadow-md max-w-full ${
                             isDark ? "bg-slate-900/90 border-slate-800" : "bg-white border-slate-200"
                         }`}
                     >
                         <button
                             onClick={handlePlayAudioQuestion}
-                            className={`p-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                                 isSpeakingAudio
                                     ? "bg-blue-600 text-white animate-pulse"
                                     : isDark
@@ -506,11 +639,11 @@ int main() {
                                     : "bg-blue-50 hover:bg-blue-100 text-blue-700"
                             }`}
                         >
-                            {isSpeakingAudio ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                            <span>{isSpeakingAudio ? "Stop Speaking" : "Hear AI Interviewer Voice"}</span>
+                            {isSpeakingAudio ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                            <span>{isSpeakingAudio ? "Stop Speaking" : "Hear Interviewer Voice"}</span>
                         </button>
                         <span
-                            className={`text-xs italic ${isDark ? "text-slate-400" : "text-slate-600"}`}
+                            className={`text-xs italic truncate max-w-xs sm:max-w-md ${isDark ? "text-slate-400" : "text-slate-600"}`}
                         >
                             "Design a distributed rate-limiter for Google Search..."
                         </span>

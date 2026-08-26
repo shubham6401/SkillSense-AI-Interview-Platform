@@ -345,150 +345,255 @@ function RecruiterDashboard() {
                         <p className="text-xs text-slate-500 mt-1">No candidate matched your current search filters.</p>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
-                                        <th className="py-4 px-6">Candidate</th>
-                                        <th className="py-4 px-6">Verified Skills & Proficiency</th>
-                                        <th className="py-4 px-6 text-center">Placement Readiness</th>
-                                        <th className="py-4 px-6 text-center">Evaluated Grade</th>
-                                        <th className="py-4 px-6 text-center">Shortlist Status</th>
-                                        <th className="py-4 px-6 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100 text-xs">
-                                    {filteredCandidates.map((candidate) => {
-                                        const readiness = candidate.placementReadiness || 0;
-
-                                        return (
-                                            <tr key={candidate._id} className="hover:bg-slate-50/70 transition-colors">
-                                                {/* Candidate Info */}
-                                                <td className="py-4 px-6">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
-                                                            {candidate.name.charAt(0).toUpperCase()}
-                                                        </div>
-                                                        <div>
-                                                            <p className="font-bold text-slate-900 text-sm">{candidate.name}</p>
-                                                            <p className="text-[11px] text-slate-400">{candidate.email}</p>
-                                                            {candidate.headline && (
-                                                                <p className="text-[10px] text-indigo-600 font-semibold truncate max-w-[200px]">
-                                                                    {candidate.headline}
-                                                                </p>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                {/* Skills & Domain Breakdown */}
-                                                <td className="py-4 px-6 max-w-sm">
-                                                    {candidate.skillBreakdown?.length > 0 ? (
-                                                        <div className="flex flex-wrap gap-1.5">
-                                                            {candidate.skillBreakdown.slice(0, 3).map((sb, sbIdx) => (
-                                                                <span
-                                                                    key={sbIdx}
-                                                                    className="bg-indigo-50/80 text-indigo-800 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-indigo-200 flex items-center gap-1"
-                                                                >
-                                                                    <span>{sb.skill}</span>
-                                                                    <span className="text-indigo-500 font-semibold">{sb.averageScore}/10</span>
-                                                                </span>
-                                                            ))}
-                                                            {candidate.skills.length > 3 && (
-                                                                <span className="text-[10px] text-slate-400 font-semibold self-center">
-                                                                    +{candidate.skills.length - 3} skills
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    ) : candidate.skills.length > 0 ? (
-                                                        <div className="flex flex-wrap gap-1">
-                                                            {candidate.skills.slice(0, 4).map((s, sIdx) => (
-                                                                <span
-                                                                    key={sIdx}
-                                                                    className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-semibold border border-slate-200"
-                                                                >
-                                                                    {s}
-                                                                </span>
-                                                            ))}
-                                                        </div>
-                                                    ) : (
-                                                        <span className="text-[11px] text-slate-400 italic">No skills listed</span>
+                    <>
+                        {/* Mobile Candidate Card View (< md) */}
+                        <div className="md:hidden space-y-4">
+                            {filteredCandidates.map((candidate) => {
+                                const readiness = candidate.placementReadiness || 0;
+                                return (
+                                    <div
+                                        key={candidate._id}
+                                        className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4"
+                                    >
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
+                                                    {candidate.name.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-extrabold text-slate-900 text-sm">{candidate.name}</h3>
+                                                    <p className="text-[11px] text-slate-400">{candidate.email}</p>
+                                                    {candidate.headline && (
+                                                        <p className="text-[10px] text-indigo-600 font-semibold mt-0.5 line-clamp-1">
+                                                            {candidate.headline}
+                                                        </p>
                                                     )}
-                                                </td>
+                                                </div>
+                                            </div>
+                                            <span className={`px-2.5 py-0.5 rounded-full font-extrabold text-[11px] border shrink-0 ${gradeColors[candidate.grade] || gradeColors["N/A"]}`}>
+                                                {candidate.grade}
+                                            </span>
+                                        </div>
 
-                                                {/* Placement Readiness */}
-                                                <td className="py-4 px-6 text-center">
-                                                    <div className="inline-flex flex-col items-center">
-                                                        <span className={`font-extrabold text-sm ${readiness >= 80 ? "text-emerald-600" : readiness >= 50 ? "text-blue-600" : "text-amber-600"}`}>
-                                                            {readiness}%
-                                                        </span>
-                                                        <div className="w-20 bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
-                                                            <div
-                                                                className={`h-full rounded-full ${readiness >= 80 ? "bg-emerald-500" : readiness >= 50 ? "bg-blue-500" : "bg-amber-500"}`}
-                                                                style={{ width: `${readiness}%` }}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                        {/* Readiness Meter */}
+                                        <div>
+                                            <div className="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                                <span>Placement Readiness</span>
+                                                <span className={readiness >= 80 ? "text-emerald-600" : readiness >= 50 ? "text-blue-600" : "text-amber-600"}>
+                                                    {readiness}%
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full ${readiness >= 80 ? "bg-emerald-500" : readiness >= 50 ? "bg-blue-500" : "bg-amber-500"}`}
+                                                    style={{ width: `${readiness}%` }}
+                                                />
+                                            </div>
+                                        </div>
 
-                                                {/* Grade */}
-                                                <td className="py-4 px-6 text-center">
-                                                    <span className={`px-3 py-1 rounded-full font-extrabold text-xs border ${gradeColors[candidate.grade] || gradeColors["N/A"]}`}>
-                                                        {candidate.grade}
-                                                    </span>
-                                                </td>
+                                        {/* Skills Preview */}
+                                        <div className="flex flex-wrap gap-1">
+                                            {candidate.skills?.slice(0, 4).map((s, idx) => (
+                                                <span key={idx} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-semibold border border-slate-200">
+                                                    {s}
+                                                </span>
+                                            ))}
+                                            {candidate.skills?.length > 4 && (
+                                                <span className="text-[10px] text-slate-400 font-semibold self-center">
+                                                    +{candidate.skills.length - 4} more
+                                                </span>
+                                            )}
+                                        </div>
 
-                                                {/* Shortlist Status Selector */}
-                                                <td className="py-4 px-6 text-center">
-                                                    <select
-                                                        value={candidate.shortlistStatus}
-                                                        onChange={(e) => handleShortlistChange(candidate._id, e.target.value)}
-                                                        disabled={updatingShortlistId === candidate._id}
-                                                        className={`text-[11px] font-bold px-3 py-1.5 rounded-xl border focus:outline-none transition ${statusBadgeColors[candidate.shortlistStatus] || statusBadgeColors.None}`}
-                                                    >
-                                                        <option value="None">Not Shortlisted</option>
-                                                        <option value="Shortlisted">★ Shortlisted</option>
-                                                        <option value="Under Review">Under Review</option>
-                                                        <option value="Interviewing">Interviewing</option>
-                                                        <option value="Offer Extended">Offer Extended</option>
-                                                        <option value="Rejected">Rejected</option>
-                                                    </select>
-                                                </td>
+                                        {/* Actions */}
+                                        <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                                            <select
+                                                value={candidate.shortlistStatus}
+                                                onChange={(e) => handleShortlistChange(candidate._id, e.target.value)}
+                                                disabled={updatingShortlistId === candidate._id}
+                                                className={`flex-1 text-xs font-bold px-3 py-2 rounded-xl border focus:outline-none transition ${statusBadgeColors[candidate.shortlistStatus] || statusBadgeColors.None}`}
+                                            >
+                                                <option value="None">Not Shortlisted</option>
+                                                <option value="Shortlisted">★ Shortlisted</option>
+                                                <option value="Under Review">Under Review</option>
+                                                <option value="Interviewing">Interviewing</option>
+                                                <option value="Offer Extended">Offer Extended</option>
+                                                <option value="Rejected">Rejected</option>
+                                            </select>
 
-                                                {/* Actions: Notes & Inspect */}
-                                                <td className="py-4 px-6 text-right">
-                                                    <div className="flex items-center justify-end gap-1.5">
-                                                        <button
-                                                            onClick={() => setNoteModal({
-                                                                isOpen: true,
-                                                                candidate,
-                                                                notes: candidate.shortlistNotes || "",
-                                                                status: candidate.shortlistStatus !== "None" ? candidate.shortlistStatus : "Shortlisted",
-                                                                saving: false,
-                                                            })}
-                                                            className="p-1.5 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200 transition"
-                                                            title="Add Private Recruiter Note / Interview Alert"
-                                                        >
-                                                            <MessageSquare size={14} />
-                                                        </button>
+                                            <button
+                                                onClick={() => setNoteModal({
+                                                    isOpen: true,
+                                                    candidate,
+                                                    notes: candidate.shortlistNotes || "",
+                                                    status: candidate.shortlistStatus !== "None" ? candidate.shortlistStatus : "Shortlisted",
+                                                    saving: false,
+                                                })}
+                                                className="p-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200 transition"
+                                                title="Add Note"
+                                            >
+                                                <MessageSquare size={16} />
+                                            </button>
 
-                                                        <button
-                                                            onClick={() => handleInspectCandidate(candidate)}
-                                                            className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1"
-                                                        >
-                                                            <span>Inspect</span>
-                                                            <ExternalLink size={12} />
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
+                                            <button
+                                                onClick={() => handleInspectCandidate(candidate)}
+                                                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition inline-flex items-center gap-1 shadow-xs"
+                                            >
+                                                <span>Inspect</span>
+                                                <ExternalLink size={13} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    </div>
+
+                        {/* Desktop Table View (>= md) */}
+                        <div className="hidden md:block bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                                            <th className="py-4 px-6">Candidate</th>
+                                            <th className="py-4 px-6">Verified Skills & Proficiency</th>
+                                            <th className="py-4 px-6 text-center">Placement Readiness</th>
+                                            <th className="py-4 px-6 text-center">Evaluated Grade</th>
+                                            <th className="py-4 px-6 text-center">Shortlist Status</th>
+                                            <th className="py-4 px-6 text-right">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100 text-xs">
+                                        {filteredCandidates.map((candidate) => {
+                                            const readiness = candidate.placementReadiness || 0;
+
+                                            return (
+                                                <tr key={candidate._id} className="hover:bg-slate-50/70 transition-colors">
+                                                    {/* Candidate Info */}
+                                                    <td className="py-4 px-6">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                                                                {candidate.name.charAt(0).toUpperCase()}
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-bold text-slate-900 text-sm">{candidate.name}</p>
+                                                                <p className="text-[11px] text-slate-400">{candidate.email}</p>
+                                                                {candidate.headline && (
+                                                                    <p className="text-[10px] text-indigo-600 font-semibold truncate max-w-[200px]">
+                                                                        {candidate.headline}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    {/* Skills & Domain Breakdown */}
+                                                    <td className="py-4 px-6 max-w-sm">
+                                                        {candidate.skillBreakdown?.length > 0 ? (
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                                {candidate.skillBreakdown.slice(0, 3).map((sb, sbIdx) => (
+                                                                    <span
+                                                                        key={sbIdx}
+                                                                        className="bg-indigo-50/80 text-indigo-800 px-2 py-0.5 rounded-md text-[10px] font-extrabold border border-indigo-200 flex items-center gap-1"
+                                                                    >
+                                                                        <span>{sb.skill}</span>
+                                                                        <span className="text-indigo-500 font-semibold">{sb.averageScore}/10</span>
+                                                                    </span>
+                                                                ))}
+                                                                {candidate.skills.length > 3 && (
+                                                                    <span className="text-[10px] text-slate-400 font-semibold self-center">
+                                                                        +{candidate.skills.length - 3} skills
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        ) : candidate.skills.length > 0 ? (
+                                                            <div className="flex flex-wrap gap-1">
+                                                                {candidate.skills.slice(0, 4).map((s, sIdx) => (
+                                                                    <span
+                                                                        key={sIdx}
+                                                                        className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-semibold border border-slate-200"
+                                                                    >
+                                                                        {s}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-[11px] text-slate-400 italic">No skills listed</span>
+                                                        )}
+                                                    </td>
+
+                                                    {/* Placement Readiness */}
+                                                    <td className="py-4 px-6 text-center">
+                                                        <div className="inline-flex flex-col items-center">
+                                                            <span className={`font-extrabold text-sm ${readiness >= 80 ? "text-emerald-600" : readiness >= 50 ? "text-blue-600" : "text-amber-600"}`}>
+                                                                {readiness}%
+                                                            </span>
+                                                            <div className="w-20 bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+                                                                <div
+                                                                    className={`h-full rounded-full ${readiness >= 80 ? "bg-emerald-500" : readiness >= 50 ? "bg-blue-500" : "bg-amber-500"}`}
+                                                                    style={{ width: `${readiness}%` }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    {/* Grade */}
+                                                    <td className="py-4 px-6 text-center">
+                                                        <span className={`px-3 py-1 rounded-full font-extrabold text-xs border ${gradeColors[candidate.grade] || gradeColors["N/A"]}`}>
+                                                            {candidate.grade}
+                                                        </span>
+                                                    </td>
+
+                                                    {/* Shortlist Status Selector */}
+                                                    <td className="py-4 px-6 text-center">
+                                                        <select
+                                                            value={candidate.shortlistStatus}
+                                                            onChange={(e) => handleShortlistChange(candidate._id, e.target.value)}
+                                                            disabled={updatingShortlistId === candidate._id}
+                                                            className={`text-[11px] font-bold px-3 py-1.5 rounded-xl border focus:outline-none transition ${statusBadgeColors[candidate.shortlistStatus] || statusBadgeColors.None}`}
+                                                        >
+                                                            <option value="None">Not Shortlisted</option>
+                                                            <option value="Shortlisted">★ Shortlisted</option>
+                                                            <option value="Under Review">Under Review</option>
+                                                            <option value="Interviewing">Interviewing</option>
+                                                            <option value="Offer Extended">Offer Extended</option>
+                                                            <option value="Rejected">Rejected</option>
+                                                        </select>
+                                                    </td>
+
+                                                    {/* Actions: Notes & Inspect */}
+                                                    <td className="py-4 px-6 text-right">
+                                                        <div className="flex items-center justify-end gap-1.5">
+                                                            <button
+                                                                onClick={() => setNoteModal({
+                                                                    isOpen: true,
+                                                                    candidate,
+                                                                    notes: candidate.shortlistNotes || "",
+                                                                    status: candidate.shortlistStatus !== "None" ? candidate.shortlistStatus : "Shortlisted",
+                                                                    saving: false,
+                                                                })}
+                                                                className="p-1.5 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200 transition"
+                                                                title="Add Private Recruiter Note / Interview Alert"
+                                                            >
+                                                                <MessageSquare size={14} />
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => handleInspectCandidate(candidate)}
+                                                                className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs font-bold transition inline-flex items-center gap-1"
+                                                            >
+                                                                <span>Inspect</span>
+                                                                <ExternalLink size={12} />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </>
                 )}
             </main>
 

@@ -566,44 +566,44 @@ function Interview() {
                         </div>
 
                         {/* Interactive Multi-Modal Workspace Tabs */}
-                        <div className="flex items-center gap-2 border-b border-slate-200 pb-1">
+                        <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar">
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("verbal")}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition ${
+                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
                                     activeWorkspaceTab === "verbal"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
                                 <FileText size={15} />
-                                <span>Verbal & Written Explanation</span>
+                                <span><span className="hidden sm:inline">Verbal & </span>Written Explanation</span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("code")}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition ${
+                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
                                     activeWorkspaceTab === "code"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
                                 <Code2 size={15} />
-                                <span>Code Compiler & Big-O</span>
+                                <span>Code Compiler<span className="hidden sm:inline"> & Big-O</span></span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("whiteboard")}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition ${
+                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
                                     activeWorkspaceTab === "whiteboard"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
                                 <Layers size={15} />
-                                <span>System Design Whiteboard</span>
+                                <span><span className="hidden sm:inline">System Design </span>Whiteboard</span>
                             </button>
                         </div>
 
