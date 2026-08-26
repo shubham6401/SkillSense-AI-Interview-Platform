@@ -2,15 +2,13 @@ const InterviewSession = require("../models/InterviewSession.js");
 const generateReportFeedback = require("../services/generateReportFeedback.js");
 const getGrade = require("../utils/getGrade.js");
 
-async function generateReport(sessionId, userId) {
+async function generateReport(sessionId, userId, userRole = "candidate") {
     try {
-        const session = await InterviewSession.findOne({
-            _id: sessionId,
-            userId,
-        });
+        const query = userRole === "recruiter" ? { _id: sessionId } : { _id: sessionId, userId };
+        const session = await InterviewSession.findOne(query).populate("userId", "name email headline");
 
         if (!session) {
-            throw new Error("Interview session does not exist");
+            throw new Error("Interview session does not exist or access is unauthorized.");
         }
 
         const answers = session.answers || [];

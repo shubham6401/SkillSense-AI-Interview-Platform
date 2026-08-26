@@ -271,7 +271,7 @@ const interviewHistory = async (req, res) => {
 const interviewReport = async (req, res) => {
     try {
         const { sessionId } = req.params;
-        const report = await generateReport(sessionId, req.user.id);
+        const report = await generateReport(sessionId, req.user.id, req.user.role);
         return res.status(200).json(report);
     } catch (err) {
         console.error("Error generating report:", err);
