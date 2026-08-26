@@ -32,13 +32,17 @@ import {
     BookmarkCheck,
     Search,
     X,
+    Sun,
+    Moon,
 } from "lucide-react";
 import { login, socialLogin } from "../services/authService";
 import SystemDesignWhiteboard from "../components/interview/SystemDesignWhiteboard";
 import Footer from "../components/Footer";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Landing() {
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
     const user = JSON.parse(localStorage.getItem("user") || "null");
     const isAuthenticated = Boolean(localStorage.getItem("token"));
 
@@ -270,9 +274,9 @@ int main() {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white transition-colors duration-200 landing-root">
             {/* Top Navigation */}
-            <header className="sticky top-0 z-50 bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80">
+            <header className="sticky top-0 z-50 bg-slate-950/85 backdrop-blur-md border-b border-slate-800/80 landing-header">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2.5">
@@ -307,8 +311,22 @@ int main() {
                         </a>
                     </nav>
 
-                    {/* Auth CTAs */}
-                    <div className="flex items-center gap-3">
+                    {/* Auth CTAs & Theme Toggle */}
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                        {/* Theme Toggle Button */}
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+                            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 transition border border-slate-700/80 landing-theme-toggle"
+                        >
+                            {theme === "dark" ? (
+                                <Sun size={17} className="text-amber-400" />
+                            ) : (
+                                <Moon size={17} className="text-slate-300" />
+                            )}
+                        </button>
+
                         {isAuthenticated ? (
                             <Link
                                 to={user?.role === "recruiter" ? "/recruiter/dashboard" : "/dashboard"}
