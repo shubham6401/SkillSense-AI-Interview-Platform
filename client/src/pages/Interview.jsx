@@ -36,6 +36,8 @@ import {
     Hourglass,
     Layers,
     FileText,
+    LogOut,
+    Check,
 } from "lucide-react";
 
 function Interview() {
@@ -55,6 +57,10 @@ function Interview() {
     const [codeContent, setCodeContent] = useState("");
     const [sessionId, setSessionId] = useState("");
     const [interviewConfig, setInterviewConfig] = useState(null);
+
+    // End early modal state
+    const [isEndEarlyModalOpen, setIsEndEarlyModalOpen] = useState(false);
+    const [endingEarly, setEndingEarly] = useState(false);
 
     // Timers
     const [questionSecondsElapsed, setQuestionSecondsElapsed] = useState(0);
@@ -303,6 +309,44 @@ function Interview() {
         }
     };
 
+    // End interview in the middle & generate report
+    const handleEndEarly = async (includeCurrentAnswer = false) => {
+        try {
+            setEndingEarly(true);
+            if (isListening) stopListening();
+            if (isSpeaking && "speechSynthesis" in window) {
+                window.speechSynthesis.cancel();
+                setIsSpeaking(false);
+            }
+
+            if (includeCurrentAnswer && (answer.trim() || codeContent.trim())) {
+                const activeQuestion = questions[currentQuestion];
+                const fullAnswer = codeContent.trim()
+                    ? `${answer.trim()}\n\n[Executable Code Solution]:\n${codeContent.trim()}`
+                    : answer.trim();
+
+                const data = {
+                    sessionId,
+                    question: activeQuestion.question,
+                    skill: activeQuestion.skill,
+                    answer: fullAnswer,
+                    codeSnippet: codeContent.trim(),
+                    timeSpentSeconds: questionSecondsElapsed,
+                };
+                await submitAnswer(data);
+            }
+
+            await endInterview(sessionId);
+            navigate(`/report/${sessionId}`);
+        } catch (err) {
+            console.error("End early failed:", err);
+            alert("Could not finalize report. Make sure at least one question was completed.");
+        } finally {
+            setEndingEarly(false);
+            setIsEndEarlyModalOpen(false);
+        }
+    };
+
     const formatTimer = (totalSec) => {
         const mins = Math.floor(totalSec / 60);
         const secs = totalSec % 60;
@@ -402,6 +446,16 @@ function Interview() {
                                         <Timer size={14} className={totalSecondsRemaining <= 180 ? "text-red-500" : "text-blue-600"} />
                                         <span>Total: {formatTimer(totalSecondsRemaining)}</span>
                                     </div>
+
+                                    {/* End Early Button in HUD */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsEndEarlyModalOpen(true)}
+                                        className="px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition flex items-center gap-1"
+                                    >
+                                        <LogOut size={13} />
+                                        <span className="hidden sm:inline">End & Submit</span>
+                                    </button>
 
                                     {/* Progress percentage */}
                                     <span className="text-xs font-bold text-blue-600">
@@ -531,12 +585,12 @@ function Interview() {
                                 onClick={() => setActiveWorkspaceTab("code")}
                                 className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition ${
                                     activeWorkspaceTab === "code"
-                                        ? "bg-purple-600 text-white shadow-md shadow-purple-500/20"
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
                                 <Code2 size={15} />
-                                <span>Live Code Compiler & Big-O</span>
+                                <span>Code Compiler & Big-O</span>
                             </button>
 
                             <button
@@ -544,7 +598,7 @@ function Interview() {
                                 onClick={() => setActiveWorkspaceTab("whiteboard")}
                                 className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition ${
                                     activeWorkspaceTab === "whiteboard"
-                                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                                        ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
@@ -639,11 +693,21 @@ function Interview() {
                             <SystemDesignWhiteboard />
                         )}
 
-                        {/* Submit & Next Button */}
-                        <div className="flex items-center justify-between pt-4">
-                            <div className="flex items-center gap-2 text-slate-500 text-xs font-medium">
-                                <Clock size={14} />
-                                <span>Spent on this question: {formatTimer(questionSecondsElapsed)}</span>
+                        {/* Submit & Next Button Bar */}
+                        <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-1.5 text-slate-500 text-xs font-medium">
+                                    <Clock size={14} />
+                                    <span>Spent on this question: {formatTimer(questionSecondsElapsed)}</span>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setIsEndEarlyModalOpen(true)}
+                                    className="px-3.5 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl text-xs font-bold transition border border-rose-200/80"
+                                >
+                                    End & Submit Early
+                                </button>
                             </div>
 
                             <button
@@ -669,6 +733,63 @@ function Interview() {
                                     </>
                                 )}
                             </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* END INTERVIEW EARLY CONFIRMATION MODAL */}
+                {isEndEarlyModalOpen && (
+                    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4">
+                        <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-150 text-slate-900">
+                            <button
+                                onClick={() => setIsEndEarlyModalOpen(false)}
+                                className="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+                            >
+                                <X size={18} />
+                            </button>
+
+                            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 border border-rose-100">
+                                <LogOut size={22} />
+                            </div>
+
+                            <h3 className="text-xl font-extrabold text-slate-900">
+                                End Interview Early & Submit?
+                            </h3>
+                            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                                You are currently on Question {currentQuestion + 1} of {questions.length}. We will finalize your session and evaluate all answered questions with Gemini AI.
+                            </p>
+
+                            <div className="mt-6 space-y-2.5">
+                                {(answer.trim() || codeContent.trim()) && (
+                                    <button
+                                        type="button"
+                                        disabled={endingEarly}
+                                        onClick={() => handleEndEarly(true)}
+                                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                                    >
+                                        {endingEarly ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
+                                        <span>Submit Current Answer & Finish Assessment</span>
+                                    </button>
+                                )}
+
+                                <button
+                                    type="button"
+                                    disabled={endingEarly}
+                                    onClick={() => handleEndEarly(false)}
+                                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2"
+                                >
+                                    <span>Finish Assessment Now</span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    disabled={endingEarly}
+                                    onClick={() => setIsEndEarlyModalOpen(false)}
+                                    className="w-full py-2.5 text-slate-500 hover:text-slate-800 text-xs font-bold transition"
+                                >
+                                    Cancel & Return to Question
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
