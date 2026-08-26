@@ -977,19 +977,25 @@ int main() {
                     </div>
 
                     <div
-                        className={`rounded-3xl p-8 border grid md:grid-cols-12 gap-8 items-center shadow-xl ${
+                        className={`rounded-3xl p-6 sm:p-8 md:p-10 border grid grid-cols-1 md:grid-cols-12 gap-8 items-center shadow-xl ${
                             isDark ? "bg-slate-950 border-slate-800" : "bg-white border-slate-200"
                         }`}
                     >
+                        {/* Sliders Form Controls */}
                         <div className="md:col-span-7 space-y-6">
-                            <div>
+                            <div className="space-y-2">
                                 <div
-                                    className={`flex justify-between text-xs font-bold mb-2 ${
-                                        isDark ? "text-slate-300" : "text-slate-700"
+                                    className={`flex justify-between items-center text-xs sm:text-sm font-bold ${
+                                        isDark ? "text-slate-200" : "text-slate-700"
                                     }`}
                                 >
-                                    <span>Years of Engineering Experience:</span>
-                                    <span className="text-blue-600 font-extrabold">{calcYears} Years</span>
+                                    <span className="flex items-center gap-1.5">
+                                        <Briefcase size={15} className="text-blue-500" />
+                                        Years of Engineering Experience:
+                                    </span>
+                                    <span className="text-blue-600 font-extrabold px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs sm:text-sm">
+                                        {calcYears} {calcYears === 1 ? "Year" : "Years"}
+                                    </span>
                                 </div>
                                 <input
                                     type="range"
@@ -997,18 +1003,29 @@ int main() {
                                     max="10"
                                     value={calcYears}
                                     onChange={(e) => setCalcYears(Number(e.target.value))}
-                                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                                 />
+                                <div className="flex justify-between text-[10px] text-slate-400 font-semibold px-1">
+                                    <span>Entry / 0 Yrs</span>
+                                    <span>Mid-Level / 3 Yrs</span>
+                                    <span>Senior / 5 Yrs</span>
+                                    <span>Staff+ / 10 Yrs</span>
+                                </div>
                             </div>
 
-                            <div>
+                            <div className="space-y-2">
                                 <div
-                                    className={`flex justify-between text-xs font-bold mb-2 ${
-                                        isDark ? "text-slate-300" : "text-slate-700"
+                                    className={`flex justify-between items-center text-xs sm:text-sm font-bold ${
+                                        isDark ? "text-slate-200" : "text-slate-700"
                                     }`}
                                 >
-                                    <span>DSA & System Design Problems Solved:</span>
-                                    <span className="text-blue-600 font-extrabold">{calcProblems} Problems</span>
+                                    <span className="flex items-center gap-1.5">
+                                        <Code2 size={15} className="text-indigo-500" />
+                                        LeetCode & System Design Problems Solved:
+                                    </span>
+                                    <span className="text-indigo-600 font-extrabold px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-xs sm:text-sm">
+                                        {calcProblems} Problems
+                                    </span>
                                 </div>
                                 <input
                                     type="range"
@@ -1017,43 +1034,104 @@ int main() {
                                     step="10"
                                     value={calcProblems}
                                     onChange={(e) => setCalcProblems(Number(e.target.value))}
-                                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                                 />
+                                <div className="flex justify-between text-[10px] text-slate-400 font-semibold px-1">
+                                    <span>0 (Beginner)</span>
+                                    <span>150 (Core DSA)</span>
+                                    <span>300 (FAANG Level)</span>
+                                    <span>500+ (Mastery)</span>
+                                </div>
                             </div>
 
-                            <button
-                                onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
-                                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2"
-                            >
-                                <span>Verify with Live AI Mock Interview →</span>
-                            </button>
+                            <div className="pt-2">
+                                <button
+                                    onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
+                                    className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center justify-center gap-2"
+                                >
+                                    <Sparkles size={15} />
+                                    <span>Verify with Live AI Mock Interview</span>
+                                    <ArrowRight size={14} />
+                                </button>
+                            </div>
                         </div>
 
+                        {/* High-Tech Circular Gauge Dial */}
                         <div
-                            className={`rounded-2xl p-6 border text-center flex flex-col items-center justify-center ${
-                                isDark ? "bg-slate-900/80 border-slate-800" : "bg-slate-50 border-slate-200"
+                            className={`md:col-span-5 rounded-3xl p-6 sm:p-8 border text-center flex flex-col items-center justify-center relative overflow-hidden shadow-inner ${
+                                isDark ? "bg-slate-900/90 border-slate-800" : "bg-slate-50 border-slate-200"
                             }`}
                         >
                             <span
-                                className={`text-xs font-bold uppercase tracking-wider ${
+                                className={`text-[11px] font-extrabold uppercase tracking-wider mb-3 ${
                                     isDark ? "text-slate-400" : "text-slate-500"
                                 }`}
                             >
-                                Projected Readiness:
+                                Projected Placement Readiness
                             </span>
-                            <p className="text-5xl font-extrabold text-emerald-600 mt-2">
-                                {calculatedScore}%
-                            </p>
-                            <span className="mt-2 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-600 border border-emerald-500/30">
+
+                            {/* Circular Radial Meter */}
+                            <div className="relative w-44 h-44 flex items-center justify-center my-2">
+                                <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                                    {/* Track circle */}
+                                    <circle
+                                        cx="80"
+                                        cy="80"
+                                        r="64"
+                                        className={isDark ? "stroke-slate-800" : "stroke-slate-200"}
+                                        strokeWidth="12"
+                                        fill="transparent"
+                                    />
+                                    {/* Animated Progress circle */}
+                                    <circle
+                                        cx="80"
+                                        cy="80"
+                                        r="64"
+                                        stroke="url(#readinessGradient)"
+                                        strokeWidth="12"
+                                        strokeDasharray={402}
+                                        strokeDashoffset={402 - (calculatedScore / 100) * 402}
+                                        strokeLinecap="round"
+                                        fill="transparent"
+                                        className="transition-all duration-500 ease-out"
+                                    />
+                                    <defs>
+                                        <linearGradient id="readinessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#2563eb" />
+                                            <stop offset="50%" stopColor="#6366f1" />
+                                            <stop offset="100%" stopColor="#10b981" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+
+                                <div className="absolute flex flex-col items-center justify-center">
+                                    <span className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                                        {calculatedScore}%
+                                    </span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase mt-0.5">
+                                        Match Score
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="mt-2 px-3.5 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs">
                                 {calculatedGrade}
                             </span>
-                            <p
-                                className={`text-[11px] mt-3 ${
-                                    isDark ? "text-slate-400" : "text-slate-500"
-                                }`}
-                            >
-                                Calibrated for Google L4/L5 & Top-Tier Product Engineering Teams.
-                            </p>
+
+                            <div className="w-full mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1.5 text-left">
+                                <div className="flex justify-between">
+                                    <span>Algorithmic DSA:</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                                        {calcProblems >= 200 ? "FAANG Ready" : "Intermediate"}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>System Architecture:</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200">
+                                        {calcYears >= 3 ? "L5 / Senior Tier" : "L3 / Associate"}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
