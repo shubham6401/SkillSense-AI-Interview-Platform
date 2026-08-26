@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { login, socialLogin } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, LogIn, Eye, EyeOff, BrainCircuit, Sparkles, CheckCircle2, Building2, User, ArrowRight } from "lucide-react";
+import { Mail, Lock, LogIn, Eye, EyeOff, BrainCircuit, Sparkles, CheckCircle2, Building2, User, ArrowRight, Sun, Moon } from "lucide-react";
 import SocialAuthModal from "../components/auth/SocialAuthModal";
+import { useTheme } from "../context/ThemeContext";
 
 function Login() {
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
+    const isDark = theme === "dark";
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
@@ -73,12 +76,44 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden transition-colors duration-200 ${
+            isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"
+        }`}>
+            {/* Top Navigation Bar with Back & Theme Toggle */}
+            <div className="w-full max-w-4xl flex items-center justify-between mb-4 z-20">
+                <Link
+                    to="/"
+                    className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition border ${
+                        isDark
+                            ? "text-slate-300 hover:text-white bg-slate-900 border-slate-800"
+                            : "text-slate-700 hover:text-slate-900 bg-white border-slate-200 shadow-xs"
+                    }`}
+                >
+                    <BrainCircuit size={16} className="text-blue-600" />
+                    <span>← Back to SkillSense.AI</span>
+                </Link>
+
+                <button
+                    type="button"
+                    onClick={toggleTheme}
+                    title={`Switch to ${isDark ? "Light" : "Dark"} Mode`}
+                    className={`p-2 rounded-xl border transition ${
+                        isDark
+                            ? "text-slate-300 hover:text-white bg-slate-900 border-slate-800"
+                            : "text-slate-700 hover:text-slate-900 bg-white border-slate-200 shadow-xs"
+                    }`}
+                >
+                    {isDark ? <Sun size={17} className="text-amber-400" /> : <Moon size={17} className="text-slate-600" />}
+                </button>
+            </div>
+
             {/* Background Ambient Glows */}
             <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
             <div className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none" />
 
-            <div className="w-full max-w-4xl bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-12 relative z-10">
+            <div className={`w-full max-w-4xl backdrop-blur-xl border rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-12 relative z-10 ${
+                isDark ? "bg-slate-900/90 border-slate-800" : "bg-white border-slate-200"
+            }`}>
                 {/* Left Showcase Banner */}
                 <div className="hidden md:flex md:col-span-5 flex-col justify-between bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white relative">
                     <div>
