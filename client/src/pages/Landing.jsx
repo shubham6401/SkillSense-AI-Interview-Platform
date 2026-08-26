@@ -35,6 +35,7 @@ import {
     Sun,
     Moon,
     Menu,
+    Briefcase,
 } from "lucide-react";
 import { login, socialLogin } from "../services/authService";
 import SystemDesignWhiteboard from "../components/interview/SystemDesignWhiteboard";
