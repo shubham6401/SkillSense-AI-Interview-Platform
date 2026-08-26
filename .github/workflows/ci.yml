@@ -1,0 +1,60 @@
+name: SkillSense CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-validation:
+    name: Backend Syntax & Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: 'server/package-lock.json'
+
+      - name: Install Server Dependencies
+        run: |
+          cd server
+          npm ci || npm install
+
+      - name: Verify Backend File Syntax
+        run: |
+          cd server
+          node -c app.js
+          node -c services/codeExecution.js
+          node -c services/analyzeComplexity.js
+          node -c controllers/interviewController.js
+          node -c controllers/recruiterController.js
+
+  frontend-build:
+    name: Frontend Client Build & Optimization
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: Install Client Dependencies
+        run: |
+          cd client
+          npm ci || npm install
+
+      - name: Build Vite Production Bundle
+        run: |
+          cd client
+          npm run build
