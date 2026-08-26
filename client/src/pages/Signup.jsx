@@ -23,6 +23,7 @@ function Signup() {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
     const isDark = theme === "dark";
+
     const [role, setRole] = useState("candidate"); // 'candidate' | 'recruiter'
     const [formData, setFormData] = useState({
         name: "",
@@ -108,9 +109,11 @@ function Signup() {
     };
 
     return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden transition-colors duration-200 ${
-            isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"
-        }`}>
+        <div
+            className={`min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-hidden transition-colors duration-200 ${
+                isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"
+            }`}
+        >
             {/* Top Navigation Bar with Back & Theme Toggle */}
             <div className="w-full max-w-4xl flex items-center justify-between mb-4 z-20">
                 <Link
@@ -142,9 +145,11 @@ function Signup() {
             <div className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
             <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-indigo-600/15 blur-3xl pointer-events-none" />
 
-            <div className={`w-full max-w-4xl backdrop-blur-xl border rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-12 relative z-10 ${
-                isDark ? "bg-slate-900/90 border-slate-800" : "bg-white border-slate-200"
-            }`}>
+            <div
+                className={`w-full max-w-4xl backdrop-blur-xl border rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-12 relative z-10 transition-colors ${
+                    isDark ? "bg-slate-900/90 border-slate-800" : "bg-white border-slate-200 text-slate-900"
+                }`}
+            >
                 {/* Left Showcase Banner */}
                 <div className="hidden md:flex md:col-span-5 flex-col justify-between bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white relative">
                     <div>
@@ -200,14 +205,22 @@ function Signup() {
                 <div className="md:col-span-7 p-8 sm:p-10 flex flex-col justify-center">
                     <div className="mb-5">
                         {/* Role Switcher Tabs */}
-                        <div className="flex bg-slate-800/90 p-1 rounded-2xl border border-slate-700/80 mb-5">
+                        <div
+                            className={`flex p-1 rounded-2xl border mb-5 ${
+                                isDark
+                                    ? "bg-slate-800/90 border-slate-700/80"
+                                    : "bg-slate-100 border-slate-200"
+                            }`}
+                        >
                             <button
                                 type="button"
                                 onClick={() => setRole("candidate")}
                                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                                     role === "candidate"
                                         ? "bg-blue-600 text-white shadow-xs"
-                                        : "text-slate-400 hover:text-slate-200"
+                                        : isDark
+                                        ? "text-slate-400 hover:text-slate-200"
+                                        : "text-slate-600 hover:text-slate-900"
                                 }`}
                             >
                                 <GraduationCap size={15} />
@@ -220,7 +233,9 @@ function Signup() {
                                 className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 ${
                                     role === "recruiter"
                                         ? "bg-indigo-600 text-white shadow-xs"
-                                        : "text-slate-400 hover:text-slate-200"
+                                        : isDark
+                                        ? "text-slate-400 hover:text-slate-200"
+                                        : "text-slate-600 hover:text-slate-900"
                                 }`}
                             >
                                 <Building2 size={15} />
@@ -228,10 +243,10 @@ function Signup() {
                             </button>
                         </div>
 
-                        <h2 className="text-2xl font-extrabold text-white tracking-tight">
+                        <h2 className={`text-2xl font-extrabold tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
                             {role === "recruiter" ? "Create Recruiter Account" : "Create Candidate Account"}
                         </h2>
-                        <p className="text-xs text-slate-400 mt-1">
+                        <p className={`text-xs mt-1 ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                             {role === "recruiter" ? "Start shortlisting top talent with verified technical analytics." : "Begin your AI mock interview journey."}
                         </p>
                     </div>
@@ -241,7 +256,11 @@ function Signup() {
                         <button
                             type="button"
                             onClick={() => setSocialModal({ isOpen: true, provider: "google" })}
-                            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-bold text-slate-200 transition shadow-xs"
+                            className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition shadow-2xs ${
+                                isDark
+                                    ? "bg-slate-800 hover:bg-slate-750 border-slate-700 text-slate-200"
+                                    : "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                            }`}
                         >
                             <svg className="w-4 h-4" viewBox="0 0 24 24">
                                 <path
@@ -267,9 +286,13 @@ function Signup() {
                         <button
                             type="button"
                             onClick={() => setSocialModal({ isOpen: true, provider: "github" })}
-                            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-bold text-slate-200 transition shadow-xs"
+                            className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border text-xs font-bold transition shadow-2xs ${
+                                isDark
+                                    ? "bg-slate-800 hover:bg-slate-750 border-slate-700 text-slate-200"
+                                    : "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                            }`}
                         >
-                            <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <svg className={`w-4 h-4 fill-current ${isDark ? "text-white" : "text-slate-900"}`} viewBox="0 0 24 24">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                             </svg>
                             <span>GitHub</span>
@@ -278,28 +301,34 @@ function Signup() {
 
                     <div className="relative mb-4">
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-slate-800" />
+                            <div className={`w-full border-t ${isDark ? "border-slate-800" : "border-slate-200"}`} />
                         </div>
                         <div className="relative flex justify-center text-[10px] uppercase font-bold text-slate-500">
-                            <span className="bg-slate-900/90 px-3">Or create password</span>
+                            <span className={`px-3 ${isDark ? "bg-slate-900" : "bg-white"}`}>Or create password</span>
                         </div>
                     </div>
 
                     <form onSubmit={handleSignup} className="space-y-3.5">
                         {/* Name Input */}
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                            <label className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                                isDark ? "text-slate-300" : "text-slate-700"
+                            }`}>
                                 Full Name
                             </label>
                             <div className="relative">
-                                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type="text"
                                     required
                                     placeholder={role === "recruiter" ? "Sarah Jenkins" : "Jane Doe"}
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full bg-slate-800/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                                    className={`w-full border rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition ${
+                                        isDark
+                                            ? "bg-slate-800/80 border-slate-700 text-slate-100 placeholder-slate-500"
+                                            : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white"
+                                    }`}
                                 />
                             </div>
                         </div>
@@ -307,18 +336,24 @@ function Signup() {
                         {/* Company Name (For Recruiters) */}
                         {role === "recruiter" && (
                             <div>
-                                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                                <label className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                                    isDark ? "text-slate-300" : "text-slate-700"
+                                }`}>
                                     Company / Organization
                                 </label>
                                 <div className="relative">
-                                    <Building2 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                                    <Building2 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                                     <input
                                         type="text"
                                         required
                                         placeholder="e.g. Google, Stripe, Microsoft, TechCorp"
                                         value={formData.companyName}
                                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                                        className="w-full bg-slate-800/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition"
+                                        className={`w-full border rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition ${
+                                            isDark
+                                                ? "bg-slate-800/80 border-slate-700 text-slate-100 placeholder-slate-500"
+                                                : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white"
+                                        }`}
                                     />
                                 </div>
                             </div>
@@ -326,41 +361,53 @@ function Signup() {
 
                         {/* Email Input */}
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                            <label className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                                isDark ? "text-slate-300" : "text-slate-700"
+                            }`}>
                                 Email Address
                             </label>
                             <div className="relative">
-                                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type="email"
                                     required
                                     placeholder={role === "recruiter" ? "sarah@company.com" : "jane@example.com"}
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                    className="w-full bg-slate-800/80 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                                    className={`w-full border rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition ${
+                                        isDark
+                                            ? "bg-slate-800/80 border-slate-700 text-slate-100 placeholder-slate-500"
+                                            : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white"
+                                    }`}
                                 />
                             </div>
                         </div>
 
                         {/* Password Input */}
                         <div>
-                            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">
+                            <label className={`block text-xs font-bold uppercase tracking-wider mb-1 ${
+                                isDark ? "text-slate-300" : "text-slate-700"
+                            }`}>
                                 Password
                             </label>
                             <div className="relative">
-                                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     required
                                     placeholder="At least 6 characters"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                    className="w-full bg-slate-800/80 border border-slate-700 rounded-xl pl-10 pr-10 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                                    className={`w-full border rounded-xl pl-10 pr-10 py-2.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition ${
+                                        isDark
+                                            ? "bg-slate-800/80 border-slate-700 text-slate-100 placeholder-slate-500"
+                                            : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white"
+                                    }`}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                                 >
                                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                 </button>
@@ -369,7 +416,7 @@ function Signup() {
 
                         {/* Error Alert */}
                         {error && (
-                            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-400 font-medium">
+                            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-600 font-bold">
                                 {error}
                             </div>
                         )}
@@ -389,9 +436,9 @@ function Signup() {
                         </button>
                     </form>
 
-                    <p className="text-center text-xs text-slate-400 mt-5">
+                    <p className={`text-center text-xs mt-5 ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                         Already have an account?{" "}
-                        <Link to="/login" className="text-blue-400 font-bold hover:underline">
+                        <Link to="/login" className="text-blue-600 font-bold hover:underline">
                             Sign In
                         </Link>
                     </p>

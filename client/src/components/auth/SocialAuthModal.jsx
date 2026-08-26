@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, Loader2, Sparkles, CheckCircle2, Shield, ArrowRight, Building2, User } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function SocialAuthModal({
     isOpen,
@@ -8,6 +9,8 @@ export default function SocialAuthModal({
     onSocialSubmit,
     defaultRole = "candidate",
 }) {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
     const [loading, setLoading] = useState(false);
     const [selectedRole, setSelectedRole] = useState(defaultRole);
     const [error, setError] = useState("");
@@ -76,18 +79,34 @@ export default function SocialAuthModal({
 
     return (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative animate-in fade-in zoom-in-95 duration-200 text-slate-100">
+            <div
+                className={`rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border relative animate-in fade-in zoom-in-95 duration-200 transition-colors ${
+                    isDark
+                        ? "bg-slate-900 border-slate-800 text-slate-100"
+                        : "bg-white border-slate-200 text-slate-900"
+                }`}
+            >
                 {/* Close button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                    className={`absolute top-6 right-6 p-2 rounded-xl transition ${
+                        isDark
+                            ? "text-slate-400 hover:text-white hover:bg-slate-800"
+                            : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                    }`}
                 >
                     <X size={18} />
                 </button>
 
                 {/* Header */}
                 <div className="text-center mb-6">
-                    <div className="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center mb-3 shadow-lg border border-slate-700 bg-slate-800">
+                    <div
+                        className={`w-12 h-12 rounded-2xl mx-auto flex items-center justify-center mb-3 shadow-md border ${
+                            isDark
+                                ? "border-slate-700 bg-slate-800"
+                                : "border-slate-200 bg-slate-50"
+                        }`}
+                    >
                         {isGoogle ? (
                             <svg className="w-6 h-6" viewBox="0 0 24 24">
                                 <path
@@ -108,21 +127,21 @@ export default function SocialAuthModal({
                                 />
                             </svg>
                         ) : (
-                            <svg className="w-6 h-6 text-white fill-current" viewBox="0 0 24 24">
+                            <svg className={`w-6 h-6 fill-current ${isDark ? "text-white" : "text-slate-900"}`} viewBox="0 0 24 24">
                                 <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                             </svg>
                         )}
                     </div>
-                    <h3 className="text-xl font-extrabold text-white">
+                    <h3 className={`text-xl font-extrabold ${isDark ? "text-white" : "text-slate-900"}`}>
                         Direct 1-Click {isGoogle ? "Google" : "GitHub"} Sign-In
                     </h3>
-                    <p className="text-xs text-slate-400 mt-1">
+                    <p className={`text-xs mt-1 ${isDark ? "text-slate-400" : "text-slate-600"}`}>
                         Select your verified profile to instantly authorize without any manual forms.
                     </p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs font-bold text-red-400">
+                    <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs font-bold text-red-600">
                         {error}
                     </div>
                 )}
@@ -135,7 +154,11 @@ export default function SocialAuthModal({
                             type="button"
                             disabled={loading}
                             onClick={() => handleInstantAuth(profile)}
-                            className="w-full p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-750 border border-slate-700 hover:border-blue-500/50 transition-all flex items-center justify-between text-left group shadow-sm hover:shadow-md"
+                            className={`w-full p-4 rounded-2xl border transition-all flex items-center justify-between text-left group shadow-xs hover:shadow-md ${
+                                isDark
+                                    ? "bg-slate-800/80 hover:bg-slate-750 border-slate-700 hover:border-blue-500/50"
+                                    : "bg-slate-50 hover:bg-white border-slate-200 hover:border-blue-400"
+                            }`}
                         >
                             <div className="flex items-center gap-3.5 min-w-0">
                                 <div className={`w-10 h-10 rounded-xl ${profile.avatarBg} text-white font-extrabold text-xs flex items-center justify-center shrink-0 shadow-md`}>
@@ -143,25 +166,31 @@ export default function SocialAuthModal({
                                 </div>
                                 <div className="min-w-0">
                                     <div className="flex items-center gap-2">
-                                        <p className="text-xs font-bold text-white truncate">{profile.name}</p>
-                                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                                        <p className={`text-xs font-bold truncate ${isDark ? "text-white" : "text-slate-900"}`}>
+                                            {profile.name}
+                                        </p>
+                                        <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600 border border-blue-500/30">
                                             {profile.badge}
                                         </span>
                                     </div>
-                                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{profile.email}</p>
-                                    <p className="text-[10px] text-slate-500 truncate">{profile.headline}</p>
+                                    <p className={`text-[11px] truncate mt-0.5 ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+                                        {profile.email}
+                                    </p>
+                                    <p className={`text-[10px] truncate ${isDark ? "text-slate-500" : "text-slate-400"}`}>
+                                        {profile.headline}
+                                    </p>
                                 </div>
                             </div>
 
-                            <span className="text-xs font-bold text-blue-400 group-hover:translate-x-1 transition shrink-0 ml-2">
+                            <span className="text-xs font-bold text-blue-600 group-hover:translate-x-1 transition shrink-0 ml-2">
                                 {loading ? <Loader2 size={15} className="animate-spin" /> : "Sign In →"}
                             </span>
                         </button>
                     ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-800 text-center">
-                    <p className="text-[11px] text-slate-500">
+                <div className={`mt-6 pt-4 border-t text-center ${isDark ? "border-slate-800" : "border-slate-100"}`}>
+                    <p className={`text-[11px] ${isDark ? "text-slate-500" : "text-slate-400"}`}>
                         Securely authenticated with 256-bit JWT & OAuth token encryption.
                     </p>
                 </div>
