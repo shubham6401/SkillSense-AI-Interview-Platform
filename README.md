@@ -146,9 +146,14 @@ node scratch/e2e_full_system_test.js
 
 ---
 
-## 🌐 1-Click Cloud Deployment & Hosting Guide
+## 🌐 1-Click Cloud Deployment & Hosting
 
-### Deploying Frontend to Vercel (Recommended)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/shubham6401/SkillSense-AI-Interview-Platform)
+
+### 1-Click Deploy via Render Blueprint (Recommended for Full-Stack)
+Click the button above or navigate to **[render.com/deploy](https://render.com/deploy?repo=https://github.com/shubham6401/SkillSense-AI-Interview-Platform)**. Render will automatically read [`render.yaml`](file:///Users/shubhamkrgupta/mmmut%20programs/web%20designing/projects/project%20interview%20platform/render.yaml) and provision both the Express backend API and the Vite React static client with SSL certificates.
+
+---
 1. Push your repository to GitHub.
 2. Go to [Vercel Dashboard](https://vercel.com) $\rightarrow$ **Add New Project** $\rightarrow$ Import `SkillSense-AI-Interview-Platform`.
 3. Set **Root Directory** to `client`.
