@@ -3,19 +3,16 @@
   "version": "1.0.0",
   "description": "Enterprise AI Mock Interview & Recruiter Talent Platform",
   "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && npm install && npm start",
     "install:all": "npm --prefix client install && npm --prefix server install",
-    "build": "npm --prefix client run build",
-    "start": "npm --prefix server start",
-    "dev:client": "npm --prefix client run dev",
-    "dev:server": "npm --prefix server run dev",
     "test:e2e": "node scratch/e2e_full_system_test.js"
   },
   "keywords": [
     "ai-interview",
     "gemini",
     "compiler",
-    "recruitment",
-    "fullstack"
+    "recruitment"
   ],
   "author": "Shubham Gupta",
   "license": "MIT"

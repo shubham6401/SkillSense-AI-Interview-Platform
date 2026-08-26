@@ -54,14 +54,15 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 
-// database connection
+// Database connection
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/interview_platform")
 .then(() => {
     console.log("MongoDB Connected Successfully");
-    app.listen(PORT, () => {
-        console.log(`Server Running on port ${PORT}`);
-    });
 })
 .catch((err) => {
-    console.error("MongoDB Connection Error:", err);
+    console.warn("MongoDB Connection Notice:", err.message);
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server Running on port ${PORT} (0.0.0.0)`);
 });
