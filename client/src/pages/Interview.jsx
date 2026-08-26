@@ -421,13 +421,39 @@ function Interview() {
 
                         {/* Question Card */}
                         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
+                            {/* Question Keyword Metadata Ribbon */}
+                            <div className="flex flex-wrap items-center gap-2 mb-4">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs">
+                                    <Building2 size={12} className="text-blue-600" />
+                                    <span>Company: {interviewConfig?.company || "Tech Interview"}</span>
+                                </span>
+
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs">
+                                    <Gauge size={12} className="text-purple-600" />
+                                    <span>Tier: {interviewConfig?.difficulty || "Mid-Level"}</span>
+                                </span>
+
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs">
+                                    <Layers size={12} className="text-indigo-600" />
+                                    <span>Track: {interviewConfig?.track || "Full-Stack"}</span>
+                                </span>
+
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
+                                    <Code2 size={12} className="text-emerald-600" />
+                                    <span>Skill: {questions[currentQuestion]?.skill || "General"}</span>
+                                </span>
+
+                                {interviewConfig?.perQuestionTimer > 0 && (
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs">
+                                        <Clock size={12} className="text-amber-600" />
+                                        <span>Target: {interviewConfig.perQuestionTimer / 60}m</span>
+                                    </span>
+                                )}
+                            </div>
+
                             <div className="flex items-start justify-between gap-4">
                                 <div className="space-y-2">
-                                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600">
-                                        <Sparkles size={14} />
-                                        Interviewer Question • {interviewConfig?.track || "Technical"}
-                                    </span>
-                                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-relaxed">
+                                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-relaxed tracking-tight">
                                         {questions[currentQuestion]?.question}
                                     </h2>
                                 </div>

@@ -26,28 +26,38 @@ async function generateReportFeedback(answers = []) {
             question: a.question,
             skill: a.skill,
             score: a.score,
+            answerSnippet: (a.answer || "").slice(0, 150),
             strengths: a.strengths,
             improvements: a.improvements,
         }));
 
-        const prompt = `
-Analyze the candidate's complete performance across these mock interview questions:
+        const prompt = `You are a Principal Staff Engineer evaluating a technical candidate interview at Google.
+Analyze the candidate's complete performance across these questions:
 ${JSON.stringify(simplifiedAnswers, null, 2)}
 
-Provide:
-1. "overallAssessment": A cohesive 2-4 sentence executive summary highlighting candidate's technical breadth, articulation, and problem-solving level.
-2. "recommendation": A high-impact 2-3 sentence recommendation detailing specific next steps, concepts to master, and mock interview practice areas.
-
-Return ONLY valid JSON in this format:
+Provide a comprehensive feedback report.
+Return ONLY valid JSON matching this exact structure:
 {
-    "overallAssessment": "...",
-    "recommendation": "..."
+    "overallAssessment": "Cohesive 2-4 sentence executive summary highlighting candidate's technical depth, problem-solving, and communication.",
+    "recommendation": "High-impact 2-3 sentence recommendation detailing specific next steps and mastery topics.",
+    "keyStrengths": [
+        "Concrete technical strength demonstrated in answers",
+        "Another strong architectural or problem-solving capability"
+    ],
+    "criticalWeaknesses": [
+        "Specific concept or gap where candidate lacked depth",
+        "Actionable technical weakness to address"
+    ]
 }
 `;
 
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash",
             contents: prompt,
+            config: {
+                maxOutputTokens: 600,
+                temperature: 0.2,
+            }
         });
 
         const rawText = response.text || "";
@@ -57,9 +67,30 @@ Return ONLY valid JSON in this format:
         return {
             overallAssessment: result.overallAssessment || "Solid performance across technical domains with opportunities to deepen knowledge in advanced topics.",
             recommendation: result.recommendation || "Focus on practicing clear architectural explanations and providing concrete code examples during technical discussions.",
+            keyStrengths: Array.isArray(result.keyStrengths) && result.keyStrengths.length > 0 ? result.keyStrengths : [
+                "Good technical communication and structure in explanations.",
+                "Demonstrated solid foundational awareness of core frameworks.",
+            ],
+            criticalWeaknesses: Array.isArray(result.criticalWeaknesses) && result.criticalWeaknesses.length > 0 ? result.criticalWeaknesses : [
+                "Incorporate more edge-case handling and system failure scenarios.",
+                "Deepen explanations of underlying runtime mechanisms.",
+            ],
         };
     } catch (err) {
-        console.warn("AI Report Feedback generation error:", err.message);
+        console.warn("AI Report Feedback generation fallback:", err.message);
+
+        // Aggregate strengths and improvements from answer records
+        const aggregatedStrengths = [];
+        const aggregatedWeaknesses = [];
+
+        for (const a of answers) {
+            if (Array.isArray(a.strengths)) {
+                aggregatedStrengths.push(...a.strengths);
+            }
+            if (Array.isArray(a.improvements)) {
+                aggregatedWeaknesses.push(...a.improvements);
+            }
+        }
 
         const avg = answers.length > 0
             ? answers.reduce((acc, a) => acc + (a.score || 0), 0) / answers.length
@@ -79,6 +110,12 @@ Return ONLY valid JSON in this format:
         return {
             overallAssessment,
             recommendation,
+            keyStrengths: aggregatedStrengths.length > 0
+                ? [...new Set(aggregatedStrengths)].slice(0, 4)
+                : ["Clear structural response format", "Solid foundational syntax and framework familiarity"],
+            criticalWeaknesses: aggregatedWeaknesses.length > 0
+                ? [...new Set(aggregatedWeaknesses)].slice(0, 4)
+                : ["Address distributed edge cases and failure handling", "Incorporate mathematical Big-O analysis in algorithmic answers"],
         };
     }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Sparkles,
     Building2,
@@ -12,6 +12,8 @@ import {
     Zap,
     Trophy,
     Hourglass,
+    Plus,
+    Minus,
 } from "lucide-react";
 
 export default function InterviewSetupModal({
@@ -23,9 +25,16 @@ export default function InterviewSetupModal({
     const [companyCategory, setCompanyCategory] = useState("FAANG / Top Tech (Google, Meta, Amazon)");
     const [customCompany, setCustomCompany] = useState("");
     const [durationMinutes, setDurationMinutes] = useState(20);
-    const [questionCount, setQuestionCount] = useState(8);
     const [perQuestionTimer, setPerQuestionTimer] = useState(120); // seconds per question, 0 for off
+    const [questionCount, setQuestionCount] = useState(10);
     const [track, setTrack] = useState("Comprehensive Full-Stack");
+
+    // Dynamically calculate and calibrate question count whenever duration or per-question timer changes
+    useEffect(() => {
+        const avgTimePerQuestion = perQuestionTimer > 0 ? perQuestionTimer / 60 : 2.5;
+        const calculated = Math.max(2, Math.min(20, Math.round(durationMinutes / avgTimePerQuestion)));
+        setQuestionCount(calculated);
+    }, [durationMinutes, perQuestionTimer]);
 
     const difficultyOptions = [
         {
@@ -59,12 +68,12 @@ export default function InterviewSetupModal({
         { name: "Custom Company", icon: Building2, tag: "Custom Target" },
     ];
 
-    // Calibrated question counts to match real interview pace: ~2 to 2.5 min per question!
     const durationPresets = [
-        { mins: 10, questions: 5, label: "Express Sprint", desc: "10 mins • 5 Questions (~2m each)" },
-        { mins: 20, questions: 8, label: "Standard Mock", desc: "20 mins • 8 Questions (~2.5m each)", popular: true },
-        { mins: 30, questions: 10, label: "Placement Sim", desc: "30 mins • 10 Questions (~3m each)" },
-        { mins: 45, questions: 12, label: "Deep Assessment", desc: "45 mins • 12 Questions (~3.5m each)" },
+        { mins: 10, label: "Express Sprint" },
+        { mins: 15, label: "Quick Mock" },
+        { mins: 20, label: "Standard Round", popular: true },
+        { mins: 30, label: "Placement Sim" },
+        { mins: 45, label: "Deep Assessment" },
     ];
 
     const trackOptions = [
@@ -103,7 +112,7 @@ export default function InterviewSetupModal({
                     Configure Your AI Mock Interview
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                    Calibrate questions to your exact target company, experience level, and preferred duration.
+                    Calibrate question count, timing pressure, target company, and difficulty tier.
                 </p>
             </div>
 
@@ -196,43 +205,41 @@ export default function InterviewSetupModal({
                     )}
                 </div>
 
-                {/* 3. Duration & Calibrated Question Ratios */}
+                {/* 3. Duration & Dynamically Calibrated Question Count */}
                 <div>
                     <div className="flex items-center justify-between mb-3">
                         <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
                             <Clock size={16} className="text-blue-600" />
                             3. Duration & Calibrated Question Count
                         </label>
+                        <span className="text-xs font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                            ⚡ Auto-Calibrated: {questionCount} Questions
+                        </span>
                     </div>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {/* Duration Presets */}
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
                         {durationPresets.map((preset) => {
                             const isSelected = durationMinutes === preset.mins;
                             return (
                                 <div
                                     key={preset.mins}
-                                    onClick={() => {
-                                        setDurationMinutes(preset.mins);
-                                        setQuestionCount(preset.questions);
-                                    }}
-                                    className={`cursor-pointer rounded-2xl p-4 text-center border transition-all duration-200 relative ${
+                                    onClick={() => setDurationMinutes(preset.mins)}
+                                    className={`cursor-pointer rounded-2xl p-3.5 text-center border transition-all duration-200 relative ${
                                         isSelected
                                             ? "border-blue-500 bg-blue-50/40 shadow-xs ring-2 ring-blue-500/20"
                                             : "border-slate-200 hover:border-slate-300 bg-white"
                                     }`}
                                 >
                                     {preset.popular && (
-                                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full tracking-wider shadow-xs">
+                                        <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[8px] font-extrabold uppercase px-2 py-0.5 rounded-full tracking-wider shadow-xs">
                                             Popular
                                         </span>
                                     )}
-                                    <span className="text-lg sm:text-xl font-extrabold text-slate-900 block mt-1">
+                                    <span className="text-base sm:text-lg font-extrabold text-slate-900 block">
                                         {preset.mins} mins
                                     </span>
-                                    <span className="text-[11px] font-bold text-blue-600 block mt-0.5">
-                                        {preset.questions} Questions
-                                    </span>
-                                    <span className="text-[10px] text-slate-400 block mt-1 font-medium">
+                                    <span className="text-[10px] text-slate-400 block mt-0.5 font-medium">
                                         {preset.label}
                                     </span>
                                 </div>
@@ -240,8 +247,8 @@ export default function InterviewSetupModal({
                         })}
                     </div>
 
-                    {/* Per-Question Timer Selector */}
-                    <div className="mt-4 p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    {/* Per-Question Timer Selector with Dynamic Ratio Feedback */}
+                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="flex items-center gap-2.5">
                             <Hourglass size={18} className="text-blue-600" />
                             <div>
@@ -249,7 +256,7 @@ export default function InterviewSetupModal({
                                     Per-Question Time Limit
                                 </span>
                                 <span className="text-[11px] text-slate-500">
-                                    Simulate interview pressure with a per-question countdown alert.
+                                    Calibrates question count to {perQuestionTimer > 0 ? `${perQuestionTimer / 60}m per question` : "~2.5m standard pace"}.
                                 </span>
                             </div>
                         </div>
@@ -260,6 +267,7 @@ export default function InterviewSetupModal({
                                 { label: "1.5m", value: 90 },
                                 { label: "2m", value: 120 },
                                 { label: "3m", value: 180 },
+                                { label: "4m", value: 240 },
                             ].map((btn) => (
                                 <button
                                     key={btn.value}
@@ -307,7 +315,7 @@ export default function InterviewSetupModal({
                     {loading ? (
                         <>
                             <Loader2 size={18} className="animate-spin" />
-                            <span>Crafting {questionCount} Questions in ~1 second...</span>
+                            <span>Calibrating & Generating {questionCount} Questions in ~1 second...</span>
                         </>
                     ) : (
                         <>

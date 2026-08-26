@@ -25,17 +25,24 @@ async function generateReport(sessionId, userId) {
         let bestQuestion = "";
         let weakestQuestion = "";
 
-        let strengths = [];
-        let averageAreas = [];
-        let weakAreas = [];
-
         let excellentAnswers = 0;
         let goodAnswers = 0;
         let poorAnswers = 0;
 
+        // Compute domain skill performance map
+        const skillScoreMap = {};
+
         for (const item of answers) {
             const score = Number(item.score) || 0;
             totalScore += score;
+
+            // Track per-skill analytics
+            const sk = item.skill || "General";
+            if (!skillScoreMap[sk]) {
+                skillScoreMap[sk] = { total: 0, count: 0 };
+            }
+            skillScoreMap[sk].total += score;
+            skillScoreMap[sk].count++;
 
             // Best question
             if (score > highestScore) {
@@ -49,23 +56,26 @@ async function generateReport(sessionId, userId) {
                 weakestQuestion = item.question;
             }
 
-            // Categorization
+            // Answer quality brackets
             if (score >= 8) {
                 excellentAnswers++;
-                if (item.skill) strengths.push(item.skill);
             } else if (score >= 5) {
                 goodAnswers++;
-                if (item.skill) averageAreas.push(item.skill);
             } else {
                 poorAnswers++;
-                if (item.skill) weakAreas.push(item.skill);
             }
         }
 
-        // Deduplicate skills
-        strengths = [...new Set(strengths)];
-        averageAreas = [...new Set(averageAreas)];
-        weakAreas = [...new Set(weakAreas)];
+        const skillBreakdown = Object.keys(skillScoreMap).map((skillName) => {
+            const avg = Number((skillScoreMap[skillName].total / skillScoreMap[skillName].count).toFixed(1));
+            return {
+                skill: skillName,
+                averageScore: avg,
+                questionsCount: skillScoreMap[skillName].count,
+                grade: getGrade(avg),
+                rating: avg >= 8 ? "Strong" : avg >= 6 ? "Moderate" : "Needs Practice",
+            };
+        });
 
         const totalQuestions = answers.length;
         const averageScore = Number((totalScore / totalQuestions).toFixed(2));
@@ -81,7 +91,7 @@ async function generateReport(sessionId, userId) {
         const minutes = totalMinutes % 60;
         const duration = hours > 0 ? `${hours} hr ${minutes} min` : `${minutes || 1} min`;
 
-        const { overallAssessment, recommendation } = await generateReportFeedback(answers);
+        const { overallAssessment, recommendation, keyStrengths, criticalWeaknesses } = await generateReportFeedback(answers);
 
         const interviewDate = session.createdAt
             ? new Date(session.createdAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })
@@ -121,9 +131,9 @@ async function generateReport(sessionId, userId) {
             goodAnswers,
             poorAnswers,
 
-            strengths,
-            averageAreas,
-            weakAreas,
+            keyStrengths: keyStrengths || [],
+            criticalWeaknesses: criticalWeaknesses || [],
+            skillBreakdown,
 
             grade,
             placementReadiness,
