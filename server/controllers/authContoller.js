@@ -71,7 +71,72 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Email and password are required." });
         }
 
-        const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
+        const normalizedEmail = email.toLowerCase().trim();
+        let existingUser = await User.findOne({ email: normalizedEmail });
+
+        // Auto-provision demo accounts on fresh database instances
+        if (!existingUser) {
+            const DEMO_ACCOUNTS = {
+                "shubham.architect@gmail.com": {
+                    name: "Shubham Gupta",
+                    role: "candidate",
+                    headline: "Senior Full-Stack Architect • Distributed Systems & React",
+                    companyName: "",
+                },
+                "sarah.google@google.com": {
+                    name: "Sarah Jenkins",
+                    role: "recruiter",
+                    headline: "Staff Technical Recruiter at Google",
+                    companyName: "Google",
+                },
+                "david.stripe@stripe.com": {
+                    name: "David Miller",
+                    role: "recruiter",
+                    headline: "Engineering Talent Acquisition Lead at Stripe",
+                    companyName: "Stripe",
+                },
+                "shubham.candidate@gmail.com": {
+                    name: "Shubham Gupta",
+                    role: "candidate",
+                    headline: "Full-Stack Software Engineer • Algorithms & React",
+                    companyName: "",
+                },
+                "recruiter.talent@google.com": {
+                    name: "Sarah Jenkins",
+                    role: "recruiter",
+                    headline: "Technical Talent Acquisition Lead at Google",
+                    companyName: "Google",
+                },
+            };
+
+            if (DEMO_ACCOUNTS[normalizedEmail]) {
+                const demoInfo = DEMO_ACCOUNTS[normalizedEmail];
+                const hashedPassword = await bcrypt.hash(password || "Password123!", 10);
+                existingUser = await User.create({
+                    name: demoInfo.name,
+                    email: normalizedEmail,
+                    password: hashedPassword,
+                    role: demoInfo.role,
+                    headline: demoInfo.headline,
+                    companyName: demoInfo.companyName,
+                    authProvider: "local",
+                });
+
+                // Seed candidate skills
+                if (demoInfo.role === "candidate") {
+                    const Resume = require("../models/resume.js");
+                    await Resume.findOneAndUpdate(
+                        { userId: existingUser._id },
+                        {
+                            userId: existingUser._id,
+                            skills: ["JavaScript", "React", "Node.js", "System Design", "Python", "MongoDB", "Data Structures", "Algorithms"],
+                            resumeText: "Experienced Software Engineer with strong proficiency in React, Node.js, Distributed Systems, and Algorithmic Problem Solving.",
+                        },
+                        { upsert: true, new: true, setDefaultsOnInsert: true }
+                    );
+                }
+            }
+        }
 
         if (!existingUser) {
             return res.status(401).json({
