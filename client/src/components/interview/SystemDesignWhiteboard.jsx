@@ -5,7 +5,6 @@ import {
     RotateCcw,
     Maximize2,
     Minimize2,
-    X,
     LayoutGrid,
     Server,
     Database,
@@ -15,26 +14,25 @@ import {
     Radio,
     Shield,
     Users,
-    Sparkles,
 } from "lucide-react";
 import useLockBodyScroll from "../../hooks/useLockBodyScroll";
 
 const getInitialElements = (isMobile = false) => {
     if (isMobile) {
         return [
-            { id: 1, type: "Client", x: 10, y: 15, icon: Users, label: "Client App" },
-            { id: 2, type: "LoadBalancer", x: 150, y: 15, icon: Radio, label: "Load Balancer" },
-            { id: 3, type: "Service", x: 10, y: 110, icon: Cpu, label: "Core Service" },
-            { id: 4, type: "Cache", x: 150, y: 110, icon: Zap, label: "Redis Cache" },
-            { id: 5, type: "Database", x: 75, y: 205, icon: Database, label: "Postgres DB" },
+            { id: 1, type: "Client", x: 8, y: 12, icon: Users, label: "Client App" },
+            { id: 2, type: "LoadBalancer", x: 135, y: 12, icon: Radio, label: "Load Balancer" },
+            { id: 3, type: "Service", x: 8, y: 95, icon: Cpu, label: "Core Service" },
+            { id: 4, type: "Cache", x: 135, y: 95, icon: Zap, label: "Redis Cache" },
+            { id: 5, type: "Database", x: 70, y: 180, icon: Database, label: "Postgres DB" },
         ];
     }
     return [
-        { id: 1, type: "Client", x: 25, y: 120, icon: Users, label: "Web / Mobile Clients" },
-        { id: 2, type: "LoadBalancer", x: 195, y: 120, icon: Radio, label: "Nginx Load Balancer" },
-        { id: 3, type: "Service", x: 375, y: 70, icon: Cpu, label: "Auth & Core Service" },
-        { id: 4, type: "Cache", x: 375, y: 200, icon: Zap, label: "Redis Cluster (Cache)" },
-        { id: 5, type: "Database", x: 555, y: 120, icon: Database, label: "PostgreSQL Replica" },
+        { id: 1, type: "Client", x: 25, y: 110, icon: Users, label: "Web / Mobile Clients" },
+        { id: 2, type: "LoadBalancer", x: 195, y: 110, icon: Radio, label: "Nginx Load Balancer" },
+        { id: 3, type: "Service", x: 375, y: 60, icon: Cpu, label: "Auth & Core Service" },
+        { id: 4, type: "Cache", x: 375, y: 185, icon: Zap, label: "Redis Cluster (Cache)" },
+        { id: 5, type: "Database", x: 555, y: 110, icon: Database, label: "PostgreSQL Replica" },
     ];
 };
 
@@ -60,12 +58,12 @@ export default function SystemDesignWhiteboard() {
     const systemPrimitives = [
         { type: "Client", label: "Client", icon: Users, defaultLabel: "Client App" },
         { type: "LoadBalancer", label: "Load Balancer", icon: Radio, defaultLabel: "ALB / Nginx" },
-        { type: "Gateway", label: "API Gateway", icon: Shield, defaultLabel: "Kong Gateway" },
+        { type: "Gateway", label: "Gateway", icon: Shield, defaultLabel: "API Gateway" },
         { type: "Service", label: "Service", icon: Cpu, defaultLabel: "Microservice" },
-        { type: "Cache", label: "Redis Cache", icon: Zap, defaultLabel: "Redis Cluster" },
-        { type: "Database", label: "Database", icon: Database, defaultLabel: "PostgreSQL DB" },
-        { type: "Queue", label: "Message Queue", icon: Server, defaultLabel: "Kafka / MQ" },
-        { type: "CDN", label: "CDN Edge", icon: Globe, defaultLabel: "CloudFront CDN" },
+        { type: "Cache", label: "Cache", icon: Zap, defaultLabel: "Redis Cache" },
+        { type: "Database", label: "Database", icon: Database, defaultLabel: "Postgres DB" },
+        { type: "Queue", label: "Queue", icon: Server, defaultLabel: "Kafka MQ" },
+        { type: "CDN", label: "CDN", icon: Globe, defaultLabel: "CloudFront" },
     ];
 
     // Setup canvas
@@ -87,12 +85,11 @@ export default function SystemDesignWhiteboard() {
         const handleResize = () => {
             const isMobile = window.innerWidth < 640;
             if (isMobile && !isExpanded) {
-                // Keep nodes within mobile boundaries
                 setElements((prev) =>
                     prev.map((el) => ({
                         ...el,
-                        x: Math.min(el.x, window.innerWidth - 160),
-                        y: Math.min(el.y, 250),
+                        x: Math.min(el.x, Math.max(10, window.innerWidth - 140)),
+                        y: Math.min(el.y, 230),
                     }))
                 );
             }
@@ -159,13 +156,13 @@ export default function SystemDesignWhiteboard() {
 
     const addPrimitive = (primitive) => {
         const board = boardAreaRef.current;
-        const maxW = board ? board.clientWidth - 150 : 200;
-        const maxH = board ? board.clientHeight - 80 : 180;
+        const maxW = board ? board.clientWidth - 130 : 180;
+        const maxH = board ? board.clientHeight - 70 : 160;
         const newEl = {
             id: Date.now(),
             type: primitive.type,
-            x: Math.max(10, Math.floor(Math.random() * maxW)),
-            y: Math.max(10, Math.floor(Math.random() * maxH)),
+            x: Math.max(8, Math.floor(Math.random() * maxW)),
+            y: Math.max(8, Math.floor(Math.random() * maxH)),
             icon: primitive.icon,
             label: primitive.defaultLabel,
         };
@@ -192,8 +189,8 @@ export default function SystemDesignWhiteboard() {
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
             const board = boardAreaRef.current;
-            const maxW = board ? board.clientWidth - 130 : 220;
-            const maxH = board ? board.clientHeight - 60 : 260;
+            const maxW = board ? board.clientWidth - 125 : 180;
+            const maxH = board ? board.clientHeight - 55 : 230;
 
             const targetX = clientX - dragOffset.x;
             const targetY = clientY - dragOffset.y;
@@ -218,7 +215,7 @@ export default function SystemDesignWhiteboard() {
 
     const whiteboardContent = (
         <div
-            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col w-full max-w-full ${
+            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col w-full max-w-full min-w-0 ${
                 isExpanded ? "h-full flex-1" : ""
             }`}
             onMouseMove={handleMoveDragElement}
@@ -227,36 +224,36 @@ export default function SystemDesignWhiteboard() {
             onTouchEnd={handleEndDragElement}
         >
             {/* Whiteboard Toolbar */}
-            <div className="bg-slate-900 px-2.5 sm:px-6 py-2 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 text-white">
-                {/* Drawing Tools */}
-                <div className="flex items-center gap-1 sm:gap-2">
+            <div className="bg-slate-900 px-3 py-2 sm:px-6 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-white w-full max-w-full min-w-0">
+                {/* Left Drawing Tools */}
+                <div className="flex items-center gap-1.5 flex-wrap">
                     <button
                         type="button"
                         onClick={() => setTool("pencil")}
-                        className={`px-2 sm:px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1 ${
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
                             tool === "pencil" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
                         }`}
                         title="Connector Pencil"
                     >
-                        <Pencil size={13} />
+                        <Pencil size={12} />
                         <span>Draw</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={() => setTool("eraser")}
-                        className={`px-2 sm:px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1 ${
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
                             tool === "eraser" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
                         }`}
                         title="Eraser"
                     >
-                        <Eraser size={13} />
+                        <Eraser size={12} />
                         <span>Erase</span>
                     </button>
 
-                    {/* Colors */}
-                    <div className="flex items-center gap-1 ml-0.5 sm:ml-1">
-                        {["#3b82f6", "#10b981", "#8b5cf6", "#f43f5e", "#f59e0b"].map((c) => (
+                    {/* Colors: 3 swatches */}
+                    <div className="flex items-center gap-1 ml-1">
+                        {["#3b82f6", "#10b981", "#f43f5e"].map((c) => (
                             <button
                                 key={c}
                                 type="button"
@@ -264,7 +261,7 @@ export default function SystemDesignWhiteboard() {
                                     setColor(c);
                                     setTool("pencil");
                                 }}
-                                className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full transition-transform ${
+                                className={`w-4 h-4 rounded-full transition-transform ${
                                     color === c && tool === "pencil"
                                         ? "scale-125 ring-2 ring-white"
                                         : "opacity-75 hover:opacity-100"
@@ -276,32 +273,32 @@ export default function SystemDesignWhiteboard() {
                     </div>
                 </div>
 
-                {/* Right Action Buttons: Clear, Auto-Arrange, Expand */}
-                <div className="flex items-center gap-1 sm:gap-2 ml-auto">
+                {/* Right Action Tools */}
+                <div className="flex items-center gap-1.5 ml-auto flex-wrap">
                     <button
                         type="button"
                         onClick={clearCanvas}
-                        className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] sm:text-xs font-bold transition flex items-center gap-1"
+                        className="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[30px]"
                         title="Clear connector lines"
                     >
-                        <RotateCcw size={11} />
-                        <span className="hidden sm:inline">Clear Lines</span>
+                        <RotateCcw size={12} />
+                        <span className="hidden sm:inline">Clear</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={handleResetLayout}
-                        className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] sm:text-xs font-bold transition flex items-center gap-1"
+                        className="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[30px]"
                         title="Auto-arrange & reset architecture nodes"
                     >
-                        <LayoutGrid size={11} />
-                        <span>Reset</span>
+                        <LayoutGrid size={12} />
+                        <span className="hidden sm:inline">Reset</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
                             isExpanded
                                 ? "bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/30"
                                 : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30"
@@ -311,12 +308,12 @@ export default function SystemDesignWhiteboard() {
                         {isExpanded ? (
                             <>
                                 <Minimize2 size={12} />
-                                <span>Exit Fullscreen</span>
+                                <span>Exit</span>
                             </>
                         ) : (
                             <>
                                 <Maximize2 size={12} />
-                                <span>Expand Board</span>
+                                <span>Expand</span>
                             </>
                         )}
                     </button>
@@ -324,7 +321,7 @@ export default function SystemDesignWhiteboard() {
             </div>
 
             {/* Primitive Blocks Palette */}
-            <div className="bg-slate-50 px-2.5 sm:px-6 py-2 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full">
+            <div className="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full max-w-full min-w-0">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0 mr-0.5">
                     Nodes:
                 </span>
@@ -335,7 +332,7 @@ export default function SystemDesignWhiteboard() {
                             key={prim.type}
                             type="button"
                             onClick={() => addPrimitive(prim)}
-                            className="px-2 sm:px-2.5 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1 shrink-0 shadow-2xs min-h-[28px]"
+                            className="px-2 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-[11px] font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1 shrink-0 shadow-2xs min-h-[26px]"
                         >
                             <Icon size={11} className="text-indigo-600 shrink-0" />
                             <span>+ {prim.label}</span>
@@ -347,8 +344,8 @@ export default function SystemDesignWhiteboard() {
             {/* Main Interactive Diagramming Board Canvas */}
             <div
                 ref={boardAreaRef}
-                className={`relative w-full max-w-full bg-slate-50/60 overflow-hidden select-none ${
-                    isExpanded ? "flex-1 min-h-[500px]" : "h-[320px] sm:h-[450px]"
+                className={`relative w-full max-w-full min-w-0 bg-slate-50/60 overflow-hidden select-none ${
+                    isExpanded ? "flex-1 min-h-[450px]" : "h-[290px] sm:h-[420px]"
                 }`}
                 style={{ touchAction: "none" }}
             >
@@ -366,16 +363,16 @@ export default function SystemDesignWhiteboard() {
                                 top: `${el.y}px`,
                                 touchAction: "none",
                             }}
-                            className={`absolute cursor-move p-1.5 sm:p-2.5 rounded-2xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 max-w-[150px] sm:max-w-[180px] ${
+                            className={`absolute cursor-move p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 w-[118px] sm:w-[160px] ${
                                 isSelected
                                     ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg"
                                     : "border-slate-300 hover:border-slate-400"
                             }`}
                         >
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                                <Icon size={13} />
+                            <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                <Icon size={12} />
                             </div>
-                            <div className="truncate">
+                            <div className="truncate flex-1 min-w-0">
                                 <span className="text-[8px] sm:text-[9px] font-bold uppercase text-slate-400 block leading-none truncate">
                                     {el.type}
                                 </span>
@@ -390,7 +387,7 @@ export default function SystemDesignWhiteboard() {
                                             )
                                         );
                                     }}
-                                    className="text-[10px] sm:text-xs font-bold text-slate-800 bg-transparent border-0 p-0 focus:outline-none focus:ring-0 w-20 sm:w-28 truncate"
+                                    className="text-[10px] sm:text-xs font-bold text-slate-800 bg-transparent border-0 p-0 focus:outline-none focus:ring-0 w-full truncate"
                                 />
                             </div>
                         </div>
@@ -400,8 +397,8 @@ export default function SystemDesignWhiteboard() {
                 {/* Freehand Connector Canvas */}
                 <canvas
                     ref={canvasRef}
-                    width={isExpanded ? 1400 : 1000}
-                    height={isExpanded ? 800 : 450}
+                    width={isExpanded ? 1400 : 800}
+                    height={isExpanded ? 800 : 420}
                     onMouseDown={startDrawing}
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
