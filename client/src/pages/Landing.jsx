@@ -551,92 +551,92 @@ int main() {
             </header>
 
             {/* HERO SECTION */}
-            <section className="relative pt-16 pb-20 overflow-hidden">
+            <section className="relative pt-10 sm:pt-16 pb-14 sm:pb-20 overflow-hidden">
                 {/* Background Ambient Glows */}
                 <div
-                    className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] rounded-full blur-3xl pointer-events-none ${
+                    className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[700px] h-[300px] sm:h-[450px] rounded-full blur-3xl pointer-events-none ${
                         isDark
                             ? "bg-gradient-to-tr from-blue-600/20 via-indigo-600/20 to-purple-600/20"
                             : "bg-gradient-to-tr from-blue-400/15 via-indigo-400/15 to-purple-400/15"
                     }`}
                 />
 
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 text-center">
                     {/* Glow Pill */}
                     <div
-                        className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6 ${
+                        className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-4 sm:mb-6 max-w-[95%] ${
                             isDark
                                 ? "bg-blue-500/10 border border-blue-500/30 text-blue-400"
                                 : "bg-blue-50 border border-blue-200 text-blue-700"
                         }`}
                     >
-                        <Sparkles size={14} className={isDark ? "text-blue-400" : "text-blue-600"} />
-                        <span>Google & FAANG Tier-1 Interview Architecture</span>
+                        <Sparkles size={13} className={isDark ? "text-blue-400 shrink-0" : "text-blue-600 shrink-0"} />
+                        <span className="truncate">Google & FAANG Tier-1 Interview Engine</span>
                     </div>
 
                     <h1
-                        className={`text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-5xl mx-auto leading-[1.15] sm:leading-[1.12] ${
+                        className={`text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight max-w-5xl mx-auto leading-[1.18] sm:leading-[1.12] ${
                             isDark ? "text-white" : "text-slate-900"
                         }`}
                     >
                         Master Technical Interviews with{" "}
-                        <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                            AI & Real Sandboxed Code Execution
+                        <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent block sm:inline">
+                            AI & Sandboxed Code Execution
                         </span>
                     </h1>
 
                     <p
-                        className={`mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto leading-relaxed px-2 ${
+                        className={`mt-3 sm:mt-6 text-xs sm:text-base lg:text-lg max-w-3xl mx-auto leading-relaxed px-1 sm:px-2 ${
                             isDark ? "text-slate-400" : "text-slate-600"
                         }`}
                     >
-                        Simulate real coding rounds, system design architecture, and verbal technical questions calibrated for Google, Meta, and top-tier tech. Featuring multi-language compilation, real-time Big-O analysis, and recruiter shortlisting.
+                        Simulate real coding rounds, system design architecture, and verbal technical questions calibrated for Google, Meta, and top tech. Featuring multi-language compilation, real-time Big-O analysis, and recruiter shortlisting.
                     </p>
 
                     {/* CTAs */}
-                    <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
+                    <div className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 w-full max-w-xs sm:max-w-none mx-auto">
                         <button
                             onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
-                            className="px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
+                            className="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2 min-h-[44px]"
                         >
                             <span>Start Free Mock Interview</span>
-                            <ArrowRight size={16} />
+                            <ArrowRight size={15} />
                         </button>
 
                         <a
                             href="#playground"
-                            className={`px-6 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 ${
+                            className={`w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 min-h-[44px] ${
                                 isDark
                                     ? "bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-800"
                                     : "bg-white hover:bg-slate-100 text-slate-800 border-slate-200 shadow-xs"
                             }`}
                         >
-                            <Play size={14} fill="currentColor" />
+                            <Play size={13} fill="currentColor" />
                             <span>Try Live Compiler</span>
                         </a>
 
                         <a
                             href="#recruiters"
-                            className={`px-6 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 ${
+                            className={`w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 font-bold text-xs sm:text-sm rounded-2xl border transition flex items-center justify-center gap-2 min-h-[44px] ${
                                 isDark
                                     ? "bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 border-purple-800/60"
                                     : "bg-purple-50 hover:bg-purple-100 text-purple-700 border-purple-200 shadow-xs"
                             }`}
                         >
-                            <Building2 size={15} />
-                            <span>Recruiter Talent Suite</span>
+                            <Building2 size={14} />
+                            <span>Recruiter Suite</span>
                         </a>
                     </div>
 
                     {/* Audio Question Preview Pill */}
                     <div
-                        className={`mt-8 sm:mt-10 inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 sm:px-4 rounded-2xl border shadow-md max-w-full ${
+                        className={`mt-6 sm:mt-10 inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-2.5 sm:px-4 rounded-2xl border shadow-md max-w-full ${
                             isDark ? "bg-slate-900/90 border-slate-800" : "bg-white border-slate-200"
                         }`}
                     >
                         <button
                             onClick={handlePlayAudioQuestion}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                            className={`px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1.5 min-h-[34px] ${
                                 isSpeakingAudio
                                     ? "bg-blue-600 text-white animate-pulse"
                                     : isDark
@@ -644,8 +644,8 @@ int main() {
                                     : "bg-blue-50 hover:bg-blue-100 text-blue-700"
                             }`}
                         >
-                            {isSpeakingAudio ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                            <span>{isSpeakingAudio ? "Stop Speaking" : "Hear Interviewer Voice"}</span>
+                            {isSpeakingAudio ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                            <span>{isSpeakingAudio ? "Stop Audio" : "Interviewer Audio"}</span>
                         </button>
                         <span
                             className={`text-xs italic truncate max-w-xs sm:max-w-md ${isDark ? "text-slate-400" : "text-slate-600"}`}
@@ -859,64 +859,64 @@ int main() {
                     {/* Interactive Code Box */}
                     <div className="bg-slate-950 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-slate-100">
                         {/* Toolbar */}
-                        <div className="px-5 py-3.5 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex items-center gap-3">
+                        <div className="px-3 sm:px-5 py-2.5 sm:py-3.5 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                 <div className="flex items-center gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-rose-500" />
-                                    <div className="w-3 h-3 rounded-full bg-amber-500" />
-                                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
                                 </div>
-                                <span className="text-slate-700">|</span>
+                                <span className="text-slate-700 hidden sm:inline">|</span>
                                 <div className="flex items-center gap-1">
                                     {["python", "javascript", "cpp"].map((lang) => (
                                         <button
                                             key={lang}
                                             onClick={() => setDemoLang(lang)}
-                                            className={`px-3 py-1 rounded-lg text-xs font-bold capitalize transition ${
+                                            className={`px-2.5 sm:px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold capitalize transition min-h-[30px] ${
                                                 demoLang === lang
-                                                    ? "bg-blue-600 text-white"
+                                                    ? "bg-blue-600 text-white shadow-xs"
                                                     : "text-slate-400 hover:text-slate-200"
                                             }`}
                                         >
-                                            {lang === "cpp" ? "C++ (GCC)" : lang}
+                                            {lang === "cpp" ? "C++" : lang === "javascript" ? "JS" : lang}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
                                 <button
                                     onClick={handleAnalyzeDemoBigO}
                                     disabled={demoRunning}
-                                    className="px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+                                    className="px-2.5 sm:px-3.5 py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[11px] sm:text-xs rounded-xl shadow-md transition flex items-center gap-1 min-h-[32px]"
                                 >
-                                    <Sparkles size={13} />
-                                    <span>Analyze Big-O</span>
+                                    <Sparkles size={12} />
+                                    <span>Analyze<span className="hidden sm:inline"> Big-O</span></span>
                                 </button>
 
                                 <button
                                     onClick={handleRunDemo}
                                     disabled={demoRunning}
-                                    className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+                                    className="px-3 sm:px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] sm:text-xs rounded-xl shadow-md transition flex items-center gap-1 min-h-[32px]"
                                 >
-                                    <Play size={13} fill="currentColor" />
-                                    <span>Run Code</span>
+                                    <Play size={12} fill="currentColor" />
+                                    <span>Run<span className="hidden sm:inline"> Code</span></span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Code editor view */}
-                        <div className="p-5 font-mono text-xs sm:text-sm text-blue-300 bg-slate-950 overflow-x-auto whitespace-pre leading-relaxed">
+                        <div className="p-3.5 sm:p-5 font-mono text-xs sm:text-sm text-blue-300 bg-slate-950 overflow-x-auto whitespace-pre leading-relaxed">
                             {demoSnippets[demoLang]}
                         </div>
 
                         {/* Output terminal */}
-                        <div className="p-4 bg-slate-900 border-t border-slate-800 font-mono text-xs text-slate-300">
+                        <div className="p-3.5 sm:p-4 bg-slate-900 border-t border-slate-800 font-mono text-xs text-slate-300">
                             <div className="flex items-center gap-2 text-slate-500 font-bold uppercase text-[10px] mb-1">
                                 <Terminal size={12} />
                                 <span>Output Console</span>
                             </div>
-                            <div className="whitespace-pre-wrap text-emerald-400">{demoOutput}</div>
+                            <div className="whitespace-pre-wrap text-emerald-400 break-words">{demoOutput}</div>
                         </div>
                     </div>
                 </div>
@@ -957,17 +957,17 @@ int main() {
             {/* DYNAMIC PLACEMENT READINESS CALCULATOR */}
             <section
                 id="readiness-calc"
-                className={`py-20 border-y ${
+                className={`py-12 sm:py-20 border-y ${
                     isDark ? "bg-slate-900/40 border-slate-800" : "bg-slate-100/60 border-slate-200"
                 }`}
             >
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
+                <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
+                    <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
                         <span className="text-xs font-extrabold text-blue-600 uppercase tracking-wider">
                             Interactive Metric Dial
                         </span>
                         <h2
-                            className={`text-3xl font-extrabold mt-2 ${
+                            className={`text-2xl sm:text-3xl font-extrabold mt-1 ${
                                 isDark ? "text-white" : "text-slate-900"
                             }`}
                         >
@@ -983,23 +983,23 @@ int main() {
                     </div>
 
                     <div
-                        className={`rounded-3xl p-6 sm:p-8 md:p-10 border grid grid-cols-1 md:grid-cols-12 gap-8 items-center shadow-xl ${
+                        className={`rounded-3xl p-4 sm:p-8 md:p-10 border grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center shadow-xl ${
                             isDark ? "bg-slate-950 border-slate-800" : "bg-white border-slate-200"
                         }`}
                     >
                         {/* Sliders Form Controls */}
-                        <div className="md:col-span-7 space-y-6">
+                        <div className="md:col-span-7 space-y-5 sm:space-y-6">
                             <div className="space-y-2">
                                 <div
-                                    className={`flex justify-between items-center text-xs sm:text-sm font-bold ${
+                                    className={`flex flex-wrap justify-between items-center gap-2 text-xs sm:text-sm font-bold ${
                                         isDark ? "text-slate-200" : "text-slate-700"
                                     }`}
                                 >
                                     <span className="flex items-center gap-1.5">
-                                        <Briefcase size={15} className="text-blue-500" />
-                                        Years of Engineering Experience:
+                                        <Briefcase size={14} className="text-blue-500 shrink-0" />
+                                        <span>Engineering Experience:</span>
                                     </span>
-                                    <span className="text-blue-600 font-extrabold px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs sm:text-sm">
+                                    <span className="text-blue-600 font-extrabold px-2.5 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-xl text-xs sm:text-sm">
                                         {calcYears} {calcYears === 1 ? "Year" : "Years"}
                                     </span>
                                 </div>
@@ -1011,25 +1011,25 @@ int main() {
                                     onChange={(e) => setCalcYears(Number(e.target.value))}
                                     className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                                 />
-                                <div className="flex justify-between text-[10px] text-slate-400 font-semibold px-1">
-                                    <span>Entry / 0 Yrs</span>
-                                    <span>Mid-Level / 3 Yrs</span>
-                                    <span>Senior / 5 Yrs</span>
-                                    <span>Staff+ / 10 Yrs</span>
+                                <div className="flex justify-between text-[9px] sm:text-[10px] text-slate-400 font-semibold px-0.5">
+                                    <span>Entry (0y)</span>
+                                    <span>Mid (3y)</span>
+                                    <span>Senior (5y)</span>
+                                    <span>Staff+ (10y)</span>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <div
-                                    className={`flex justify-between items-center text-xs sm:text-sm font-bold ${
+                                    className={`flex flex-wrap justify-between items-center gap-2 text-xs sm:text-sm font-bold ${
                                         isDark ? "text-slate-200" : "text-slate-700"
                                     }`}
                                 >
                                     <span className="flex items-center gap-1.5">
-                                        <Code2 size={15} className="text-indigo-500" />
-                                        LeetCode & System Design Problems Solved:
+                                        <Code2 size={14} className="text-indigo-500 shrink-0" />
+                                        <span>DSA & System Design Solved:</span>
                                     </span>
-                                    <span className="text-indigo-600 font-extrabold px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-xs sm:text-sm">
+                                    <span className="text-indigo-600 font-extrabold px-2.5 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-xs sm:text-sm">
                                         {calcProblems} Problems
                                     </span>
                                 </div>
@@ -1042,18 +1042,18 @@ int main() {
                                     onChange={(e) => setCalcProblems(Number(e.target.value))}
                                     className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
                                 />
-                                <div className="flex justify-between text-[10px] text-slate-400 font-semibold px-1">
+                                <div className="flex justify-between text-[9px] sm:text-[10px] text-slate-400 font-semibold px-0.5">
                                     <span>0 (Beginner)</span>
                                     <span>150 (Core DSA)</span>
-                                    <span>300 (FAANG Level)</span>
+                                    <span>300 (FAANG)</span>
                                     <span>500+ (Mastery)</span>
                                 </div>
                             </div>
 
-                            <div className="pt-2">
+                            <div className="pt-1">
                                 <button
                                     onClick={() => handleLoginCandidate("shubham.architect@gmail.com")}
-                                    className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center justify-center gap-2"
+                                    className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center justify-center gap-2 min-h-[44px]"
                                 >
                                     <Sparkles size={15} />
                                     <span>Verify with Live AI Mock Interview</span>
@@ -1064,12 +1064,12 @@ int main() {
 
                         {/* High-Tech Circular Gauge Dial */}
                         <div
-                            className={`md:col-span-5 rounded-3xl p-6 sm:p-8 border text-center flex flex-col items-center justify-center relative overflow-hidden shadow-inner ${
+                            className={`md:col-span-5 rounded-3xl p-4 sm:p-8 border text-center flex flex-col items-center justify-center relative overflow-hidden shadow-inner ${
                                 isDark ? "bg-slate-900/90 border-slate-800" : "bg-slate-50 border-slate-200"
                             }`}
                         >
                             <span
-                                className={`text-[11px] font-extrabold uppercase tracking-wider mb-3 ${
+                                className={`text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider mb-2 ${
                                     isDark ? "text-slate-400" : "text-slate-500"
                                 }`}
                             >
@@ -1077,7 +1077,7 @@ int main() {
                             </span>
 
                             {/* Circular Radial Meter */}
-                            <div className="relative w-44 h-44 flex items-center justify-center my-2">
+                            <div className="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center my-2">
                                 <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
                                     {/* Track circle */}
                                     <circle
