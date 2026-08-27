@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
     Pencil,
     Eraser,
@@ -16,7 +16,6 @@ import {
     Shield,
     Users,
     Sparkles,
-    Move,
 } from "lucide-react";
 import useLockBodyScroll from "../../hooks/useLockBodyScroll";
 
@@ -41,7 +40,7 @@ const getInitialElements = (isMobile = false) => {
 
 export default function SystemDesignWhiteboard() {
     const canvasRef = useRef(null);
-    const containerRef = useRef(null);
+    const boardAreaRef = useRef(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
     const [tool, setTool] = useState("pencil"); // 'pencil' | 'eraser'
@@ -70,17 +69,36 @@ export default function SystemDesignWhiteboard() {
     ];
 
     // Setup canvas
-    const initCanvas = () => {
+    const initCanvas = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext("2d");
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.lineWidth = 3;
-    };
+    }, []);
 
     useEffect(() => {
         initCanvas();
+    }, [isExpanded, initCanvas]);
+
+    // Handle screen resize to adjust nodes if needed
+    useEffect(() => {
+        const handleResize = () => {
+            const isMobile = window.innerWidth < 640;
+            if (isMobile && !isExpanded) {
+                // Keep nodes within mobile boundaries
+                setElements((prev) =>
+                    prev.map((el) => ({
+                        ...el,
+                        x: Math.min(el.x, window.innerWidth - 160),
+                        y: Math.min(el.y, 250),
+                    }))
+                );
+            }
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, [isExpanded]);
 
     const getCanvasCoords = (e) => {
@@ -140,18 +158,21 @@ export default function SystemDesignWhiteboard() {
     };
 
     const addPrimitive = (primitive) => {
+        const board = boardAreaRef.current;
+        const maxW = board ? board.clientWidth - 150 : 200;
+        const maxH = board ? board.clientHeight - 80 : 180;
         const newEl = {
             id: Date.now(),
             type: primitive.type,
-            x: 40 + Math.random() * (isExpanded ? 300 : 100),
-            y: 40 + Math.random() * (isExpanded ? 200 : 80),
+            x: Math.max(10, Math.floor(Math.random() * maxW)),
+            y: Math.max(10, Math.floor(Math.random() * maxH)),
             icon: primitive.icon,
             label: primitive.defaultLabel,
         };
         setElements((prev) => [...prev, newEl]);
     };
 
-    // Mouse & Touch Dragging for Nodes
+    // Node Dragging with Boundary Clamping
     const handleStartDragElement = (el, e) => {
         e.stopPropagation();
         setSelectedElement(el.id);
@@ -169,13 +190,21 @@ export default function SystemDesignWhiteboard() {
             if (e.cancelable) e.preventDefault();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const board = boardAreaRef.current;
+            const maxW = board ? board.clientWidth - 130 : 220;
+            const maxH = board ? board.clientHeight - 60 : 260;
+
+            const targetX = clientX - dragOffset.x;
+            const targetY = clientY - dragOffset.y;
+
             setElements((prev) =>
                 prev.map((el) =>
                     el.id === selectedElement
                         ? {
                               ...el,
-                              x: Math.max(5, clientX - dragOffset.x),
-                              y: Math.max(5, clientY - dragOffset.y),
+                              x: Math.min(Math.max(5, targetX), Math.max(10, maxW)),
+                              y: Math.min(Math.max(5, targetY), Math.max(10, maxH)),
                           }
                         : el
                 )
@@ -189,9 +218,8 @@ export default function SystemDesignWhiteboard() {
 
     const whiteboardContent = (
         <div
-            ref={containerRef}
-            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col ${
-                isExpanded ? "w-full h-full" : "w-full"
+            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col w-full max-w-full ${
+                isExpanded ? "h-full flex-1" : ""
             }`}
             onMouseMove={handleMoveDragElement}
             onMouseUp={handleEndDragElement}
@@ -199,13 +227,13 @@ export default function SystemDesignWhiteboard() {
             onTouchEnd={handleEndDragElement}
         >
             {/* Whiteboard Toolbar */}
-            <div className="bg-slate-900 px-3 sm:px-6 py-2.5 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-white">
+            <div className="bg-slate-900 px-2.5 sm:px-6 py-2 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 text-white">
                 {/* Drawing Tools */}
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-1 sm:gap-2">
                     <button
                         type="button"
                         onClick={() => setTool("pencil")}
-                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                        className={`px-2 sm:px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1 ${
                             tool === "pencil" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
                         }`}
                         title="Connector Pencil"
@@ -217,7 +245,7 @@ export default function SystemDesignWhiteboard() {
                     <button
                         type="button"
                         onClick={() => setTool("eraser")}
-                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                        className={`px-2 sm:px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1 ${
                             tool === "eraser" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
                         }`}
                         title="Eraser"
@@ -227,7 +255,7 @@ export default function SystemDesignWhiteboard() {
                     </button>
 
                     {/* Colors */}
-                    <div className="flex items-center gap-1 sm:gap-1.5 ml-1">
+                    <div className="flex items-center gap-1 ml-0.5 sm:ml-1">
                         {["#3b82f6", "#10b981", "#8b5cf6", "#f43f5e", "#f59e0b"].map((c) => (
                             <button
                                 key={c}
@@ -249,31 +277,31 @@ export default function SystemDesignWhiteboard() {
                 </div>
 
                 {/* Right Action Buttons: Clear, Auto-Arrange, Expand */}
-                <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
+                <div className="flex items-center gap-1 sm:gap-2 ml-auto">
                     <button
                         type="button"
                         onClick={clearCanvas}
-                        className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] sm:text-xs font-bold transition flex items-center gap-1"
+                        className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] sm:text-xs font-bold transition flex items-center gap-1"
                         title="Clear connector lines"
                     >
-                        <RotateCcw size={12} />
+                        <RotateCcw size={11} />
                         <span className="hidden sm:inline">Clear Lines</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={handleResetLayout}
-                        className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] sm:text-xs font-bold transition flex items-center gap-1"
+                        className="px-2 sm:px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] sm:text-xs font-bold transition flex items-center gap-1"
                         title="Auto-arrange & reset architecture nodes"
                     >
-                        <LayoutGrid size={12} />
+                        <LayoutGrid size={11} />
                         <span>Reset</span>
                     </button>
 
                     <button
                         type="button"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className={`px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition flex items-center gap-1.5 min-h-[32px] ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
                             isExpanded
                                 ? "bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/30"
                                 : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30"
@@ -282,12 +310,12 @@ export default function SystemDesignWhiteboard() {
                     >
                         {isExpanded ? (
                             <>
-                                <Minimize2 size={13} />
-                                <span>Exit</span>
+                                <Minimize2 size={12} />
+                                <span>Exit Fullscreen</span>
                             </>
                         ) : (
                             <>
-                                <Maximize2 size={13} />
+                                <Maximize2 size={12} />
                                 <span>Expand Board</span>
                             </>
                         )}
@@ -296,8 +324,8 @@ export default function SystemDesignWhiteboard() {
             </div>
 
             {/* Primitive Blocks Palette */}
-            <div className="bg-slate-50 px-3 sm:px-6 py-2 border-b border-slate-200 flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0 mr-1">
+            <div className="bg-slate-50 px-2.5 sm:px-6 py-2 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0 mr-0.5">
                     Nodes:
                 </span>
                 {systemPrimitives.map((prim) => {
@@ -307,9 +335,9 @@ export default function SystemDesignWhiteboard() {
                             key={prim.type}
                             type="button"
                             onClick={() => addPrimitive(prim)}
-                            className="px-2.5 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-[11px] sm:text-xs font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1.5 shrink-0 shadow-2xs min-h-[30px]"
+                            className="px-2 sm:px-2.5 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-[10px] sm:text-xs font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1 shrink-0 shadow-2xs min-h-[28px]"
                         >
-                            <Icon size={12} className="text-indigo-600 shrink-0" />
+                            <Icon size={11} className="text-indigo-600 shrink-0" />
                             <span>+ {prim.label}</span>
                         </button>
                     );
@@ -318,8 +346,9 @@ export default function SystemDesignWhiteboard() {
 
             {/* Main Interactive Diagramming Board Canvas */}
             <div
-                className={`relative w-full bg-slate-50/60 overflow-hidden select-none ${
-                    isExpanded ? "flex-1 min-h-[500px]" : "h-[340px] sm:h-[450px]"
+                ref={boardAreaRef}
+                className={`relative w-full max-w-full bg-slate-50/60 overflow-hidden select-none ${
+                    isExpanded ? "flex-1 min-h-[500px]" : "h-[320px] sm:h-[450px]"
                 }`}
                 style={{ touchAction: "none" }}
             >
@@ -337,17 +366,17 @@ export default function SystemDesignWhiteboard() {
                                 top: `${el.y}px`,
                                 touchAction: "none",
                             }}
-                            className={`absolute cursor-move p-2 sm:p-3 rounded-2xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 sm:gap-2.5 ${
+                            className={`absolute cursor-move p-1.5 sm:p-2.5 rounded-2xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 max-w-[150px] sm:max-w-[180px] ${
                                 isSelected
                                     ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg"
                                     : "border-slate-300 hover:border-slate-400"
                             }`}
                         >
-                            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                                <Icon size={14} />
+                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                                <Icon size={13} />
                             </div>
-                            <div>
-                                <span className="text-[9px] sm:text-[10px] font-bold uppercase text-slate-400 block leading-tight">
+                            <div className="truncate">
+                                <span className="text-[8px] sm:text-[9px] font-bold uppercase text-slate-400 block leading-none truncate">
                                     {el.type}
                                 </span>
                                 <input
@@ -361,7 +390,7 @@ export default function SystemDesignWhiteboard() {
                                             )
                                         );
                                     }}
-                                    className="text-[11px] sm:text-xs font-bold text-slate-800 bg-transparent border-0 p-0 focus:outline-none focus:ring-0 w-24 sm:w-36"
+                                    className="text-[10px] sm:text-xs font-bold text-slate-800 bg-transparent border-0 p-0 focus:outline-none focus:ring-0 w-20 sm:w-28 truncate"
                                 />
                             </div>
                         </div>
@@ -389,7 +418,7 @@ export default function SystemDesignWhiteboard() {
 
     if (isExpanded) {
         return (
-            <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md p-2 sm:p-6 flex flex-col animate-in fade-in zoom-in-95 duration-150">
+            <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md p-2 sm:p-6 flex flex-col animate-in fade-in zoom-in-95 duration-150">
                 <div className="flex-1 w-full max-w-7xl mx-auto flex flex-col overflow-hidden">
                     {whiteboardContent}
                 </div>
