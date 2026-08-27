@@ -20,11 +20,11 @@ import useLockBodyScroll from "../../hooks/useLockBodyScroll";
 const getInitialElements = (isMobile = false) => {
     if (isMobile) {
         return [
-            { id: 1, type: "Client", x: 8, y: 12, icon: Users, label: "Client App" },
-            { id: 2, type: "LoadBalancer", x: 135, y: 12, icon: Radio, label: "Load Balancer" },
-            { id: 3, type: "Service", x: 8, y: 95, icon: Cpu, label: "Core Service" },
-            { id: 4, type: "Cache", x: 135, y: 95, icon: Zap, label: "Redis Cache" },
-            { id: 5, type: "Database", x: 70, y: 180, icon: Database, label: "Postgres DB" },
+            { id: 1, type: "Client", x: 10, y: 12, icon: Users, label: "Client App" },
+            { id: 2, type: "LoadBalancer", x: 140, y: 12, icon: Radio, label: "Load Balancer" },
+            { id: 3, type: "Service", x: 10, y: 90, icon: Cpu, label: "Core Service" },
+            { id: 4, type: "Cache", x: 140, y: 90, icon: Zap, label: "Redis Cache" },
+            { id: 5, type: "Database", x: 75, y: 170, icon: Database, label: "Postgres DB" },
         ];
     }
     return [
@@ -89,7 +89,7 @@ export default function SystemDesignWhiteboard() {
                     prev.map((el) => ({
                         ...el,
                         x: Math.min(el.x, Math.max(10, window.innerWidth - 140)),
-                        y: Math.min(el.y, 230),
+                        y: Math.min(el.y, 200),
                     }))
                 );
             }
@@ -156,8 +156,8 @@ export default function SystemDesignWhiteboard() {
 
     const addPrimitive = (primitive) => {
         const board = boardAreaRef.current;
-        const maxW = board ? board.clientWidth - 130 : 180;
-        const maxH = board ? board.clientHeight - 70 : 160;
+        const maxW = board ? board.clientWidth - 130 : 160;
+        const maxH = board ? board.clientHeight - 60 : 160;
         const newEl = {
             id: Date.now(),
             type: primitive.type,
@@ -189,8 +189,8 @@ export default function SystemDesignWhiteboard() {
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
             const board = boardAreaRef.current;
-            const maxW = board ? board.clientWidth - 125 : 180;
-            const maxH = board ? board.clientHeight - 55 : 230;
+            const maxW = board ? board.clientWidth - 125 : 160;
+            const maxH = board ? board.clientHeight - 55 : 210;
 
             const targetX = clientX - dragOffset.x;
             const targetY = clientY - dragOffset.y;
@@ -215,7 +215,7 @@ export default function SystemDesignWhiteboard() {
 
     const whiteboardContent = (
         <div
-            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col w-full max-w-full min-w-0 ${
+            className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden flex flex-col w-full max-w-full ${
                 isExpanded ? "h-full flex-1" : ""
             }`}
             onMouseMove={handleMoveDragElement}
@@ -223,37 +223,39 @@ export default function SystemDesignWhiteboard() {
             onTouchMove={handleMoveDragElement}
             onTouchEnd={handleEndDragElement}
         >
-            {/* Whiteboard Toolbar */}
-            <div className="bg-slate-900 px-3 py-2 sm:px-6 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-white w-full max-w-full min-w-0">
-                {/* Left Drawing Tools */}
-                <div className="flex items-center gap-1.5 flex-wrap">
-                    <button
-                        type="button"
-                        onClick={() => setTool("pencil")}
-                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
-                            tool === "pencil" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
-                        }`}
-                        title="Connector Pencil"
-                    >
-                        <Pencil size={12} />
-                        <span>Draw</span>
-                    </button>
+            {/* Whiteboard Responsive 2-Row / 1-Row Toolbar */}
+            <div className="bg-slate-900 px-3 py-2.5 sm:px-6 sm:py-3 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-white w-full">
+                {/* Row 1: Drawing Mode & Color Swatches */}
+                <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+                    <div className="flex items-center gap-1.5">
+                        <button
+                            type="button"
+                            onClick={() => setTool("pencil")}
+                            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[32px] ${
+                                tool === "pencil" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
+                            }`}
+                            title="Connector Pencil"
+                        >
+                            <Pencil size={13} />
+                            <span>Draw</span>
+                        </button>
 
-                    <button
-                        type="button"
-                        onClick={() => setTool("eraser")}
-                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
-                            tool === "eraser" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
-                        }`}
-                        title="Eraser"
-                    >
-                        <Eraser size={12} />
-                        <span>Erase</span>
-                    </button>
+                        <button
+                            type="button"
+                            onClick={() => setTool("eraser")}
+                            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[32px] ${
+                                tool === "eraser" ? "bg-blue-600 text-white shadow-xs" : "text-slate-400 hover:bg-slate-800"
+                            }`}
+                            title="Eraser"
+                        >
+                            <Eraser size={13} />
+                            <span>Erase</span>
+                        </button>
+                    </div>
 
-                    {/* Colors: 3 swatches */}
-                    <div className="flex items-center gap-1 ml-1">
-                        {["#3b82f6", "#10b981", "#f43f5e"].map((c) => (
+                    {/* Color Swatches */}
+                    <div className="flex items-center gap-1.5">
+                        {["#3b82f6", "#10b981", "#8b5cf6", "#f43f5e"].map((c) => (
                             <button
                                 key={c}
                                 type="button"
@@ -261,7 +263,7 @@ export default function SystemDesignWhiteboard() {
                                     setColor(c);
                                     setTool("pencil");
                                 }}
-                                className={`w-4 h-4 rounded-full transition-transform ${
+                                className={`w-5 h-5 rounded-full transition-transform ${
                                     color === c && tool === "pencil"
                                         ? "scale-125 ring-2 ring-white"
                                         : "opacity-75 hover:opacity-100"
@@ -273,32 +275,34 @@ export default function SystemDesignWhiteboard() {
                     </div>
                 </div>
 
-                {/* Right Action Tools */}
-                <div className="flex items-center gap-1.5 ml-auto flex-wrap">
-                    <button
-                        type="button"
-                        onClick={clearCanvas}
-                        className="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[30px]"
-                        title="Clear connector lines"
-                    >
-                        <RotateCcw size={12} />
-                        <span className="hidden sm:inline">Clear</span>
-                    </button>
+                {/* Row 2: Action Buttons (Clear, Reset, Expand) */}
+                <div className="flex items-center justify-between sm:justify-end gap-1.5 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-800/80 sm:border-t-0">
+                    <div className="flex items-center gap-1.5">
+                        <button
+                            type="button"
+                            onClick={clearCanvas}
+                            className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[32px]"
+                            title="Clear connector lines"
+                        >
+                            <RotateCcw size={12} />
+                            <span>Clear</span>
+                        </button>
 
-                    <button
-                        type="button"
-                        onClick={handleResetLayout}
-                        className="px-2 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[30px]"
-                        title="Auto-arrange & reset architecture nodes"
-                    >
-                        <LayoutGrid size={12} />
-                        <span className="hidden sm:inline">Reset</span>
-                    </button>
+                        <button
+                            type="button"
+                            onClick={handleResetLayout}
+                            className="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1 min-h-[32px]"
+                            title="Auto-arrange & reset architecture nodes"
+                        >
+                            <LayoutGrid size={12} />
+                            <span>Reset</span>
+                        </button>
+                    </div>
 
                     <button
                         type="button"
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition flex items-center gap-1 min-h-[30px] ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 min-h-[32px] ${
                             isExpanded
                                 ? "bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/30"
                                 : "bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/30"
@@ -307,13 +311,13 @@ export default function SystemDesignWhiteboard() {
                     >
                         {isExpanded ? (
                             <>
-                                <Minimize2 size={12} />
+                                <Minimize2 size={13} />
                                 <span>Exit</span>
                             </>
                         ) : (
                             <>
-                                <Maximize2 size={12} />
-                                <span>Expand</span>
+                                <Maximize2 size={13} />
+                                <span>Expand Board</span>
                             </>
                         )}
                     </button>
@@ -321,8 +325,8 @@ export default function SystemDesignWhiteboard() {
             </div>
 
             {/* Primitive Blocks Palette */}
-            <div className="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full max-w-full min-w-0">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0 mr-0.5">
+            <div className="bg-slate-50 px-3 py-2 border-b border-slate-200 flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full max-w-full">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 shrink-0 mr-1">
                     Nodes:
                 </span>
                 {systemPrimitives.map((prim) => {
@@ -332,9 +336,9 @@ export default function SystemDesignWhiteboard() {
                             key={prim.type}
                             type="button"
                             onClick={() => addPrimitive(prim)}
-                            className="px-2 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-[11px] font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1 shrink-0 shadow-2xs min-h-[26px]"
+                            className="px-2.5 py-1 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-xl text-xs font-bold text-slate-700 hover:text-indigo-700 transition flex items-center gap-1 shrink-0 shadow-2xs min-h-[28px]"
                         >
-                            <Icon size={11} className="text-indigo-600 shrink-0" />
+                            <Icon size={12} className="text-indigo-600 shrink-0" />
                             <span>+ {prim.label}</span>
                         </button>
                     );
@@ -344,8 +348,8 @@ export default function SystemDesignWhiteboard() {
             {/* Main Interactive Diagramming Board Canvas */}
             <div
                 ref={boardAreaRef}
-                className={`relative w-full max-w-full min-w-0 bg-slate-50/60 overflow-hidden select-none ${
-                    isExpanded ? "flex-1 min-h-[450px]" : "h-[290px] sm:h-[420px]"
+                className={`relative w-full max-w-full bg-slate-50/60 overflow-hidden select-none ${
+                    isExpanded ? "flex-1 min-h-[450px]" : "h-[270px] sm:h-[420px]"
                 }`}
                 style={{ touchAction: "none" }}
             >
@@ -363,13 +367,13 @@ export default function SystemDesignWhiteboard() {
                                 top: `${el.y}px`,
                                 touchAction: "none",
                             }}
-                            className={`absolute cursor-move p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 w-[118px] sm:w-[160px] ${
+                            className={`absolute cursor-move p-1.5 sm:p-2 rounded-xl bg-white border shadow-md transition-shadow z-20 flex items-center gap-1.5 w-[118px] sm:w-[155px] ${
                                 isSelected
                                     ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg"
                                     : "border-slate-300 hover:border-slate-400"
                             }`}
                         >
-                            <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
                                 <Icon size={12} />
                             </div>
                             <div className="truncate flex-1 min-w-0">

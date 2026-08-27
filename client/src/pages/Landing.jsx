@@ -923,21 +923,21 @@ int main() {
             </section>
 
             {/* INTERACTIVE SYSTEM DESIGN WHITEBOARD SECTION */}
-            <section id="system-design" className="py-12 sm:py-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
+            <section id="system-design" className="py-12 sm:py-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
+                <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 px-1">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2">
                         <Sparkles size={13} />
                         Senior & Staff Architectural Rounds
                     </div>
                     <h2
-                        className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
+                        className={`text-2xl sm:text-4xl font-extrabold mt-1 tracking-tight ${
                             isDark ? "text-white" : "text-slate-900"
                         }`}
                     >
                         Interactive System Design Whiteboard
                     </h2>
                     <p
-                        className={`mt-2 sm:mt-3 text-xs sm:text-sm max-w-2xl mx-auto ${
+                        className={`mt-2 sm:mt-3 text-xs sm:text-sm max-w-2xl mx-auto px-1 ${
                             isDark ? "text-slate-400" : "text-slate-600"
                         }`}
                     >
@@ -946,7 +946,7 @@ int main() {
                 </div>
 
                 <div
-                    className={`rounded-3xl border overflow-hidden shadow-2xl ${
+                    className={`rounded-3xl border overflow-hidden shadow-2xl w-full max-w-full ${
                         isDark ? "border-slate-800" : "border-slate-200 bg-white"
                     }`}
                 >
