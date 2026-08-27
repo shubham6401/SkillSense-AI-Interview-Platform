@@ -1,0 +1,173 @@
+%-------------------------
+% Resume in LaTeX - Shubham Kumar Gupta
+% Standard Single-Page ATS-Optimized Template
+% Based on Jake's Resume (FAANG / Top Tech Calibrated)
+%-------------------------
+
+\documentclass[letterpaper,10.8pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins for perfect 1-page fit
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\evensidemargin}{-0.55in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-0.6in}
+\addtolength{\textheight}{1.2in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{-2pt}\item
+    \begin{tabular*}{0.98\textwidth}{l@{\extracolsep{\fill}}r}
+      #1 & #2 \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    {\Huge \scshape Shubham Kumar Gupta} \\ \vspace{2pt}
+    \small Roll No.: 2024021164 \ $|$ \ B.Tech (2024 -- 2028), Computer Science \& Engineering \\
+    \small Madan Mohan Malaviya University of Technology (MMMUT), Gorakhpur \\ \vspace{3pt}
+    \small \faPhone\ +91-9336848513 \ $|$ 
+    \href{mailto:work.shubham6401@gmail.com}{\faEnvelope\ \underline{work.shubham6401@gmail.com}} \ $|$ 
+    \href{mailto:2024021164@mmmut.ac.in}{\underline{2024021164@mmmut.ac.in}} \\ \vspace{2pt}
+    \href{https://github.com/shubham6401}{\faGithub\ \underline{github.com/shubham6401}} \ $|$ 
+    \href{https://www.linkedin.com/in/shubham6401}{\faLinkedin\ \underline{linkedin.com/in/shubham6401}} \ $|$
+    \href{https://leetcode.com/u/shubham6401/}{\faCode\ \underline{LeetCode}} \ $|$
+    \href{https://www.codechef.com/users/shubham6401}{\faTrophy\ \underline{CodeChef}}
+\end{center}
+\vspace{-10pt}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Madan Mohan Malaviya University of Technology (MMMUT)}{Gorakhpur, UP}
+      {Bachelor of Technology in Computer Science and Engineering; \textbf{CGPA: 8.2}}{2024 -- 2028}
+    \resumeSubheading
+      {Navjeevan Mission School (CBSE)}{Deoria, UP}
+      {Senior Secondary (Class XII); \textbf{Percentage: 94.0\%}}{2022 -- 2024}
+    \resumeSubheading
+      {Little Flower School (ICSE)}{Salempur, UP}
+      {Secondary (Class X); \textbf{Percentage: 94.0\%}}{2020 -- 2022}
+  \resumeSubHeadingListEnd
+\vspace{-6pt}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Bharat Solar}{Remote / On-site}
+      {Software Development Engineering (SDE) Intern}{June 2026 -- July 2026}
+      \resumeItemListStart
+        \resumeItem{Architected robust backend RESTful microservices and API gateways in Node.js/Express, streamlining client-server communication and cutting data roundtrip latency by 25\%.}
+        \resumeItem{Engineered end-to-end authentication, session management, and role-based permissions to secure user workflows across distributed database systems.}
+        \resumeItem{Debugged, refactored, and optimized asynchronous database query pipelines and third-party API integrations, significantly enhancing overall application uptime and reliability.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+\vspace{-6pt}
+
+%-----------PROJECTS-----------
+\section{Projects}
+  \resumeSubHeadingListStart
+    \resumeProjectHeading
+      {\textbf{SkillSense.AI — AI Technical Interview \& RCE Platform} $|$ \emph{React 19, Node.js, Express, MongoDB, Gemini AI}}{June 2026 -- Aug 2026}
+      \small{\textbf{Links:} \href{https://skillsense-ai.onrender.com}{\underline{[Live Demo]}} \ $|$ \href{https://github.com/shubham6401/SkillSense-AI-Interview-Platform}{\underline{[GitHub Repository]}}}
+      \resumeItemListStart
+        \resumeItem{Engineered a production-ready AI mock interview platform featuring an isolated multi-language \textbf{Remote Code Execution (RCE)} compiler (Python, JS, C++, Java, Go) running automated test suites with sub-100ms execution latency.}
+        \resumeItem{Built an automated \textbf{AI Big-O Complexity Analyzer} powered by Google Gemini 2.5 to determine asymptotic Time/Space complexity and flag algorithmic bottlenecks ($O(N^2)$ quadratic loops, unindexed lookups).}
+        \resumeItem{Developed an interactive \textbf{System Design Architecture Whiteboard} with draggable cloud infrastructure primitives (Redis, Kafka, Nginx, DBs) and freehand canvas drawing for senior-level engineering interviews.}
+        \resumeItem{Integrated PDF-Parse resume extraction pipelines, JWT authentication, and a \textbf{Recruiter Talent Portal} equipped with domain skill proficiency radars, candidate leaderboards, and real-time in-app notification dispatching.}
+      \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Wanderlust — Full-Stack Property Listing Platform} $|$ \emph{React.js, Node.js, Express, MongoDB, Cloudinary}}{Jan 2026 -- April 2026}
+      \small{\textbf{Links:} \href{https://wanderlust-demo.onrender.com}{\underline{[Live Demo]}} \ $|$ \href{https://github.com/shubham6401}{\underline{[GitHub Repository]}}}
+      \resumeItemListStart
+        \resumeItem{Architected a scalable full-stack accommodation marketplace implementing complete CRUD workflows for listings, reviews, geo-location mapping, and dynamic booking reservations using MVC architecture.}
+        \resumeItem{Implemented secure user authentication and Role-Based Access Control (RBAC) via Passport.js/JWT with session management stored in \texttt{connect-mongo}.}
+        \resumeItem{Integrated Cloudinary with Multer for scalable cloud image storage, reinforced by Joi schema validation and centralized error-handling middleware ensuring reliable API responses.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+\vspace{-6pt}
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages:} C, C++, Java, Python, JavaScript (ES6+), SQL, HTML5, CSS3 \\
+     \textbf{Frontend:} React.js (v19), Tailwind CSS (v4), Vite, Bootstrap, EJS \\
+     \textbf{Backend \& Cloud:} Node.js, Express.js, REST APIs, MongoDB Atlas, Mongoose, MySQL, Cloudinary, JWT, Multer \\
+     \textbf{Developer Tools:} Git, GitHub, VS Code, Postman, Linux/Unix Shell, npm, Render, Vercel \\
+     \textbf{Core Coursework:} Data Structures \& Algorithms (DSA), Object-Oriented Programming (OOP), DBMS, Operating Systems, Computer Networks, Software Engineering
+    }}
+ \end{itemize}
+\vspace{-6pt}
+
+%-----------ACHIEVEMENTS & CERTIFICATIONS-----------
+\section{Achievements \& Certifications}
+ \resumeItemListStart
+    \resumeItem{\textbf{Competitive Programming (CodeChef):} Achieved a peak rating of \textbf{1500} on CodeChef, placing in the top percentile of active competitive programmers.}
+    \resumeItem{\textbf{Problem Solving (LeetCode):} Solved \textbf{250+ DSA problems} spanning Dynamic Programming, Graphs, Trees, Arrays, and Linked Lists.}
+    \resumeItem{\textbf{Hackathons \& Contests:} Finalist in \textbf{AlgoOlympic 2026} \& \textbf{Syntax Siege 2025} (University-Level Competitions); Winner -- Day 1, CDC 5-Day Coding Bootcamp.}
+    \resumeItem{\textbf{Certification:} \textbf{Decode C++ with DSA} -- Physics Wallah (Mastered Advanced Data Structures, Algorithms \& Time Complexity, May 2026).}
+ \resumeItemListEnd
+
+%-------------------------------------------
+\end{document}

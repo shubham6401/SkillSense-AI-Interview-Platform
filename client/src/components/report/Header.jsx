@@ -15,7 +15,7 @@ export default function Header() {
                     <Sparkles size={13} />
                     AI Evaluation Summary
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Interview Performance Report
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -23,10 +23,10 @@ export default function Header() {
                 </p>
             </div>
 
-            <div className="flex flex-wrap gap-2.5 no-print">
+            <div className="flex flex-wrap gap-2 no-print w-full sm:w-auto">
                 <button
                     onClick={() => navigate("/history")}
-                    className="flex items-center gap-1.5 bg-white border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-xs transition"
+                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 bg-white border border-slate-200 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-xs transition min-h-[40px]"
                 >
                     <ArrowLeft size={16} />
                     All History

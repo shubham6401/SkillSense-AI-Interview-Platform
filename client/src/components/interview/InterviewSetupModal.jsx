@@ -101,14 +101,14 @@ export default function InterviewSetupModal({
     };
 
     return (
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl max-w-4xl mx-auto">
+        <div className="bg-white rounded-3xl p-4 sm:p-8 md:p-10 border border-slate-200 shadow-xl max-w-4xl mx-auto w-full">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">
+            <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[11px] font-bold uppercase tracking-wider mb-2.5">
                     <Sparkles size={13} />
                     Interview Calibration Center
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
                     Configure Your AI Mock Interview
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -116,36 +116,36 @@ export default function InterviewSetupModal({
                 </p>
             </div>
 
-            <form onSubmit={handleStart} className="space-y-8">
+            <form onSubmit={handleStart} className="space-y-6 sm:space-y-8">
                 {/* 1. Difficulty Selection */}
                 <div>
-                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-                        <Gauge size={16} className="text-blue-600" />
+                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                        <Gauge size={15} className="text-blue-600 shrink-0" />
                         1. Select Experience & Difficulty Level
                     </label>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {difficultyOptions.map((opt) => {
                             const isSelected = difficulty === opt.id;
                             return (
                                 <div
                                     key={opt.id}
                                     onClick={() => setDifficulty(opt.id)}
-                                    className={`cursor-pointer rounded-2xl p-4 border transition-all duration-200 flex flex-col justify-between ${
+                                    className={`cursor-pointer rounded-2xl p-3.5 sm:p-4 border transition-all duration-200 flex flex-col justify-between select-none min-h-[100px] ${
                                         isSelected
                                             ? "border-blue-500 bg-blue-50/40 shadow-xs ring-2 ring-blue-500/20"
                                             : "border-slate-200 hover:border-slate-300 bg-white"
                                     }`}
                                 >
-                                    <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center justify-between mb-1.5">
                                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${opt.badge}`}>
                                             {opt.exp}
                                         </span>
-                                        <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${isSelected ? "border-blue-600 bg-blue-600" : "border-slate-300"}`}>
+                                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isSelected ? "border-blue-600 bg-blue-600" : "border-slate-300"}`}>
                                             {isSelected && <Check size={10} className="text-white" />}
                                         </div>
                                     </div>
-                                    <h4 className="font-bold text-slate-800 text-sm">{opt.title}</h4>
+                                    <h4 className="font-bold text-slate-800 text-xs sm:text-sm">{opt.title}</h4>
                                     <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{opt.desc}</p>
                                 </div>
                             );
@@ -155,12 +155,12 @@ export default function InterviewSetupModal({
 
                 {/* 2. Target Company */}
                 <div>
-                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-                        <Building2 size={16} className="text-blue-600" />
+                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                        <Building2 size={15} className="text-blue-600 shrink-0" />
                         2. Target Company / Interview Style
                     </label>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                         {companyPresets.map((preset) => {
                             const isSelected = companyCategory === preset.name;
                             const Icon = preset.icon;
@@ -168,23 +168,23 @@ export default function InterviewSetupModal({
                                 <div
                                     key={preset.name}
                                     onClick={() => setCompanyCategory(preset.name)}
-                                    className={`cursor-pointer rounded-2xl p-3.5 border transition-all duration-200 flex items-center justify-between ${
+                                    className={`cursor-pointer rounded-2xl p-3 sm:p-3.5 border transition-all duration-200 flex items-center justify-between select-none ${
                                         isSelected
                                             ? "border-blue-500 bg-blue-50/40 shadow-xs ring-2 ring-blue-500/20"
                                             : "border-slate-200 hover:border-slate-300 bg-white"
                                     }`}
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${isSelected ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
-                                            <Icon size={18} />
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-600"}`}>
+                                            <Icon size={16} />
                                         </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-800 leading-snug">{preset.name}</p>
-                                            <span className="text-[10px] text-slate-400 font-medium">{preset.tag}</span>
+                                        <div className="min-w-0">
+                                            <p className="text-xs font-bold text-slate-800 leading-snug truncate">{preset.name}</p>
+                                            <span className="text-[10px] text-slate-400 font-medium truncate block">{preset.tag}</span>
                                         </div>
                                     </div>
                                     <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center shrink-0 ml-2 ${isSelected ? "border-blue-600 bg-blue-600" : "border-slate-300"}`}>
-                                        {isSelected && <Check size={10} className="text-white" />}
+                                        {isSelected && <Check size={9} className="text-white" />}
                                     </div>
                                 </div>
                             );
@@ -199,7 +199,7 @@ export default function InterviewSetupModal({
                                 placeholder="Enter company name (e.g. Netflix, Databricks, Zomato, Atlassian)..."
                                 value={customCompany}
                                 onChange={(e) => setCustomCompany(e.target.value)}
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                             />
                         </div>
                     )}
@@ -207,25 +207,25 @@ export default function InterviewSetupModal({
 
                 {/* 3. Duration & Dynamically Calibrated Question Count */}
                 <div>
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                         <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500">
-                            <Clock size={16} className="text-blue-600" />
+                            <Clock size={15} className="text-blue-600 shrink-0" />
                             3. Duration & Calibrated Question Count
                         </label>
-                        <span className="text-xs font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+                        <span className="text-xs font-extrabold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
                             ⚡ Auto-Calibrated: {questionCount} Questions
                         </span>
                     </div>
 
                     {/* Duration Presets */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3 mb-3.5">
                         {durationPresets.map((preset) => {
                             const isSelected = durationMinutes === preset.mins;
                             return (
                                 <div
                                     key={preset.mins}
                                     onClick={() => setDurationMinutes(preset.mins)}
-                                    className={`cursor-pointer rounded-2xl p-3.5 text-center border transition-all duration-200 relative ${
+                                    className={`cursor-pointer rounded-2xl p-3 text-center border transition-all duration-200 relative select-none ${
                                         isSelected
                                             ? "border-blue-500 bg-blue-50/40 shadow-xs ring-2 ring-blue-500/20"
                                             : "border-slate-200 hover:border-slate-300 bg-white"
@@ -236,10 +236,10 @@ export default function InterviewSetupModal({
                                             Popular
                                         </span>
                                     )}
-                                    <span className="text-base sm:text-lg font-extrabold text-slate-900 block">
+                                    <span className="text-sm sm:text-base font-extrabold text-slate-900 block">
                                         {preset.mins} mins
                                     </span>
-                                    <span className="text-[10px] text-slate-400 block mt-0.5 font-medium">
+                                    <span className="text-[9px] sm:text-[10px] text-slate-400 block mt-0.5 font-medium truncate">
                                         {preset.label}
                                     </span>
                                 </div>
@@ -248,20 +248,21 @@ export default function InterviewSetupModal({
                     </div>
 
                     {/* Per-Question Timer Selector with Dynamic Ratio Feedback */}
-                    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="p-3.5 sm:p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="flex items-center gap-2.5">
-                            <Hourglass size={18} className="text-blue-600" />
+                            <Hourglass size={18} className="text-blue-600 shrink-0" />
                             <div>
                                 <span className="text-xs font-bold text-slate-800 block">
                                     Per-Question Time Limit
                                 </span>
                                 <span className="text-[11px] text-slate-500">
-                                    Calibrates question count to {perQuestionTimer > 0 ? `${perQuestionTimer / 60}m per question` : "~2.5m standard pace"}.
+                                    Calibrates to {perQuestionTimer > 0 ? `${perQuestionTimer / 60}m per question` : "~2.5m standard pace"}.
                                 </span>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                        {/* Button list wrapping neatly on mobile */}
+                        <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
                             {[
                                 { label: "Off", value: 0 },
                                 { label: "1.5m", value: 90 },
@@ -273,7 +274,7 @@ export default function InterviewSetupModal({
                                     key={btn.value}
                                     type="button"
                                     onClick={() => setPerQuestionTimer(btn.value)}
-                                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition min-h-[36px] flex items-center justify-center ${
                                         perQuestionTimer === btn.value
                                             ? "bg-blue-600 text-white shadow-xs"
                                             : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"
@@ -288,8 +289,8 @@ export default function InterviewSetupModal({
 
                 {/* 4. Specialization Track */}
                 <div>
-                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-                        <Layers size={16} className="text-blue-600" />
+                    <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                        <Layers size={15} className="text-blue-600 shrink-0" />
                         4. Specialization Track
                     </label>
 
@@ -310,12 +311,12 @@ export default function InterviewSetupModal({
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 min-h-[48px]"
                 >
                     {loading ? (
                         <>
                             <Loader2 size={18} className="animate-spin" />
-                            <span>Calibrating & Generating {questionCount} Questions in ~1 second...</span>
+                            <span>Generating {questionCount} Questions in ~1s...</span>
                         </>
                     ) : (
                         <>

@@ -41,6 +41,7 @@ import { login, socialLogin } from "../services/authService";
 import SystemDesignWhiteboard from "../components/interview/SystemDesignWhiteboard";
 import Footer from "../components/Footer";
 import { useTheme } from "../context/ThemeContext";
+import useLockBodyScroll from "../hooks/useLockBodyScroll";
 
 export default function Landing() {
     const navigate = useNavigate();
@@ -67,6 +68,9 @@ export default function Landing() {
 
     // Candidate Preview Modal state for landing page
     const [inspectedCandidate, setInspectedCandidate] = useState(null);
+
+    // Lock body scroll when candidate modal is open
+    useLockBodyScroll(Boolean(inspectedCandidate));
 
     // FAQ Accordion State
     const [openFaq, setOpenFaq] = useState(null);
@@ -919,24 +923,25 @@ int main() {
             </section>
 
             {/* INTERACTIVE SYSTEM DESIGN WHITEBOARD SECTION */}
-            <section id="system-design" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center max-w-3xl mx-auto mb-10">
-                    <span className="text-xs font-extrabold text-indigo-600 uppercase tracking-wider">
-                        Senior & Staff Rounds
-                    </span>
+            <section id="system-design" className="py-12 sm:py-20 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
+                        <Sparkles size={13} />
+                        Senior & Staff Architectural Rounds
+                    </div>
                     <h2
-                        className={`text-3xl sm:text-4xl font-extrabold mt-2 ${
+                        className={`text-2xl sm:text-4xl font-extrabold mt-1 ${
                             isDark ? "text-white" : "text-slate-900"
                         }`}
                     >
-                        Interactive System Design Architecture Whiteboard
+                        Interactive System Design Whiteboard
                     </h2>
                     <p
-                        className={`mt-3 text-sm ${
+                        className={`mt-2 sm:mt-3 text-xs sm:text-sm max-w-2xl mx-auto ${
                             isDark ? "text-slate-400" : "text-slate-600"
                         }`}
                     >
-                        Test your architectural intuition. Drag system nodes (Load Balancers, Redis Caches, Kafka Queues, DBs) and connect them visually right below:
+                        Drag system primitives (Load Balancers, Redis Caches, Microservices, DBs) and connect them visually with freehand architecture lines. Tap <strong className="text-indigo-600">"Expand Board"</strong> on mobile for a spacious full-screen canvas.
                     </p>
                 </div>
 
@@ -1355,9 +1360,14 @@ int main() {
 
             {/* CANDIDATE INSPECT MODAL */}
             {inspectedCandidate && (
-                <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4">
+                <div 
+                    className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) setInspectedCandidate(null);
+                    }}
+                >
                     <div
-                        className={`rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border relative animate-in fade-in zoom-in-95 duration-150 ${
+                        className={`rounded-3xl max-w-2xl w-full p-4 sm:p-7 md:p-8 shadow-2xl border relative animate-in fade-in zoom-in-95 duration-150 max-h-[calc(100dvh-1.5rem)] overflow-y-auto my-auto ${
                             isDark
                                 ? "bg-slate-900 border-slate-800 text-slate-100"
                                 : "bg-white border-slate-200 text-slate-900"
@@ -1365,28 +1375,29 @@ int main() {
                     >
                         <button
                             onClick={() => setInspectedCandidate(null)}
-                            className={`absolute top-6 right-6 p-2 rounded-xl transition ${
+                            className={`absolute top-4 sm:top-6 right-4 sm:right-6 p-2 rounded-xl transition min-w-[36px] min-h-[36px] flex items-center justify-center ${
                                 isDark
                                     ? "text-slate-400 hover:text-white hover:bg-slate-800"
                                     : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
                             }`}
+                            aria-label="Close candidate preview modal"
                         >
                             <X size={18} />
                         </button>
 
-                        <div className="mb-4">
+                        <div className="mb-4 pr-8">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600 block mb-1">
                                 Candidate Performance Transcript Preview
                             </span>
-                            <h3 className={`text-xl font-extrabold ${isDark ? "text-white" : "text-slate-900"}`}>
+                            <h3 className={`text-lg sm:text-xl font-extrabold truncate ${isDark ? "text-white" : "text-slate-900"}`}>
                                 {inspectedCandidate.name}
                             </h3>
-                            <p className="text-xs text-indigo-600 mt-0.5">{inspectedCandidate.headline}</p>
+                            <p className="text-xs text-indigo-600 mt-0.5 truncate">{inspectedCandidate.headline}</p>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3.5 sm:space-y-4">
                             <div
-                                className={`p-3.5 rounded-2xl border flex items-center justify-between ${
+                                className={`p-3 sm:p-3.5 rounded-2xl border flex items-center justify-between ${
                                     isDark ? "bg-slate-950 border-slate-800" : "bg-slate-50 border-slate-200"
                                 }`}
                             >
@@ -1401,7 +1412,7 @@ int main() {
                             </div>
 
                             <div
-                                className={`p-4 rounded-2xl border ${
+                                className={`p-3.5 sm:p-4 rounded-2xl border ${
                                     isDark ? "bg-slate-950 border-slate-800" : "bg-slate-50 border-slate-200"
                                 }`}
                             >
@@ -1409,7 +1420,7 @@ int main() {
                                     Sample Verified Interview Response & AI Rating:
                                 </span>
                                 <p
-                                    className={`text-xs font-mono whitespace-pre-wrap leading-relaxed ${
+                                    className={`text-xs font-mono whitespace-pre-wrap leading-relaxed break-words overflow-x-auto ${
                                         isDark ? "text-slate-300" : "text-slate-800"
                                     }`}
                                 >
@@ -1419,7 +1430,7 @@ int main() {
 
                             <button
                                 onClick={() => handleLoginRecruiter("sarah.google@google.com")}
-                                className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2"
+                                className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2 min-h-[44px]"
                             >
                                 <Building2 size={15} />
                                 <span>Log In as Recruiter to View Full Profile & Shortlist</span>

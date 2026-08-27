@@ -434,23 +434,23 @@ export default function LiveCodeEditor({
     return (
         <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-2xl">
             {/* Editor Toolbar */}
-            <div className="bg-slate-950 px-4 sm:px-6 py-3.5 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                        <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                        <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+            <div className="bg-slate-950 px-3 sm:px-6 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2.5">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-rose-500/80" />
+                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80" />
+                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80" />
                     </div>
 
-                    <span className="text-slate-600">|</span>
+                    <span className="text-slate-700 hidden sm:inline">|</span>
 
                     {/* FAANG Problem Template Selector */}
-                    <div className="flex items-center gap-1.5">
-                        <BookOpen size={14} className="text-indigo-400" />
+                    <div className="flex items-center gap-1">
+                        <BookOpen size={13} className="text-indigo-400 shrink-0" />
                         <select
                             value={selectedProblemId}
                             onChange={(e) => handleProblemChange(e.target.value)}
-                            className="bg-slate-900 border border-slate-700 text-indigo-300 text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 max-w-[220px] sm:max-w-xs truncate"
+                            className="bg-slate-900 border border-slate-700 text-indigo-300 text-[11px] sm:text-xs font-bold rounded-xl px-2 sm:px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 max-w-[130px] sm:max-w-xs truncate"
                         >
                             {FAANG_PROBLEMS.map((p) => (
                                 <option key={p.id} value={p.id}>
@@ -460,40 +460,38 @@ export default function LiveCodeEditor({
                         </select>
                     </div>
 
-                    <span className="text-slate-600">|</span>
-
                     {/* Language Selector */}
                     <select
                         value={language}
                         onChange={(e) => handleLanguageChange(e.target.value)}
-                        className="bg-slate-900 border border-slate-700 text-slate-200 text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                        className="bg-slate-900 border border-slate-700 text-slate-200 text-[11px] sm:text-xs font-bold rounded-xl px-2 sm:px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                     >
-                        <option value="python">Python 3.10</option>
-                        <option value="javascript">JavaScript (Node.js)</option>
-                        <option value="cpp">C++ (GCC 10.2)</option>
-                        <option value="java">Java (OpenJDK 15)</option>
+                        <option value="python">Python 3</option>
+                        <option value="javascript">JS (Node)</option>
+                        <option value="cpp">C++ (GCC)</option>
+                        <option value="java">Java 15</option>
                         <option value="go">Go 1.16</option>
                     </select>
                 </div>
 
                 {/* Right Action Buttons */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
                     <button
                         type="button"
                         onClick={handleCopy}
                         title="Copy Code"
-                        className="p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+                        className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
                     >
-                        {copied ? <Check size={15} className="text-emerald-400" /> : <Copy size={15} />}
+                        {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
                     </button>
 
                     <button
                         type="button"
                         onClick={() => handleLanguageChange(language)}
                         title="Reset Template"
-                        className="p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+                        className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
                     >
-                        <RotateCcw size={15} />
+                        <RotateCcw size={14} />
                     </button>
 
                     {/* Analyze Big-O Button */}
@@ -501,17 +499,17 @@ export default function LiveCodeEditor({
                         type="button"
                         onClick={handleAnalyzeComplexity}
                         disabled={analyzingComplexity || !code.trim()}
-                        className="px-3.5 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-600/20 transition flex items-center gap-1.5"
+                        className="px-2.5 sm:px-3.5 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 text-white font-bold text-[11px] sm:text-xs rounded-xl shadow-md shadow-purple-600/20 transition flex items-center gap-1 min-h-[34px]"
                     >
                         {analyzingComplexity ? (
                             <>
-                                <Loader2 size={13} className="animate-spin" />
-                                <span>Analyzing Big-O...</span>
+                                <Loader2 size={12} className="animate-spin" />
+                                <span>Analyzing...</span>
                             </>
                         ) : (
                             <>
-                                <Sparkles size={13} />
-                                <span>Analyze Big-O Complexity</span>
+                                <Sparkles size={12} />
+                                <span>Analyze Big-O<span className="hidden md:inline"> Complexity</span></span>
                             </>
                         )}
                     </button>
@@ -521,17 +519,17 @@ export default function LiveCodeEditor({
                         type="button"
                         onClick={handleRunCode}
                         disabled={executing || !code.trim()}
-                        className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-600/25 transition flex items-center gap-1.5"
+                        className="px-3 sm:px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-[11px] sm:text-xs rounded-xl shadow-md shadow-emerald-600/25 transition flex items-center gap-1 min-h-[34px]"
                     >
                         {executing ? (
                             <>
-                                <Loader2 size={13} className="animate-spin" />
-                                <span>Compiling...</span>
+                                <Loader2 size={12} className="animate-spin" />
+                                <span>Running...</span>
                             </>
                         ) : (
                             <>
-                                <Play size={13} fill="currentColor" />
-                                <span>Run Code</span>
+                                <Play size={12} fill="currentColor" />
+                                <span>Run<span className="hidden sm:inline"> Code</span></span>
                             </>
                         )}
                     </button>

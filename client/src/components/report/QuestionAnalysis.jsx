@@ -42,10 +42,10 @@ export default function QuestionAnalysis({ report }) {
                     </p>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 no-print self-start sm:self-auto">
+                <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 no-print self-start sm:self-auto">
                     <button
                         onClick={() => setFilter("all")}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition ${
                             filter === "all"
                                 ? "bg-white text-blue-600 shadow-xs"
                                 : "text-slate-600 hover:text-slate-900"
@@ -55,17 +55,17 @@ export default function QuestionAnalysis({ report }) {
                     </button>
                     <button
                         onClick={() => setFilter("high")}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition ${
                             filter === "high"
                                 ? "bg-white text-emerald-600 shadow-xs"
                                 : "text-slate-600 hover:text-slate-900"
                         }`}
                     >
-                        High Score ({answers.filter((a) => (a.score || 0) >= 8).length})
+                        High ({answers.filter((a) => (a.score || 0) >= 8).length})
                     </button>
                     <button
                         onClick={() => setFilter("low")}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition ${
                             filter === "low"
                                 ? "bg-white text-rose-600 shadow-xs"
                                 : "text-slate-600 hover:text-slate-900"
@@ -77,7 +77,7 @@ export default function QuestionAnalysis({ report }) {
             </div>
 
             {/* Questions List */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
                 {filteredAnswers.map((answer, index) => {
                     const score = Number(answer.score) || 0;
                     const isHigh = score >= 8;
@@ -97,7 +97,7 @@ export default function QuestionAnalysis({ report }) {
                     return (
                         <div
                             key={index}
-                            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm print-break-inside-avoid"
+                            className="bg-white rounded-3xl p-4 sm:p-7 md:p-8 border border-slate-200 shadow-sm print-break-inside-avoid"
                         >
                             {/* Card Header */}
                             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">

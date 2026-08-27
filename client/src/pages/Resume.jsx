@@ -263,10 +263,10 @@ function Resume() {
 
                     {/* Right: Detected & Custom Skills Tuning */}
                     <div className="lg:col-span-6 flex flex-col">
-                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-between">
+                        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-between">
                             <div>
                                 <div className="flex items-center justify-between mb-1">
-                                    <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
                                         <Award className="text-blue-600" size={22} />
                                         Extracted Skills
                                     </h2>

@@ -9,6 +9,7 @@ import {
 } from "../services/interviewService";
 import { getCurrentResume } from "../services/resumeService";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import useLockBodyScroll from "../hooks/useLockBodyScroll";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import InterviewSetupModal from "../components/interview/InterviewSetupModal";
@@ -61,6 +62,8 @@ function Interview() {
     // End early modal state
     const [isEndEarlyModalOpen, setIsEndEarlyModalOpen] = useState(false);
     const [endingEarly, setEndingEarly] = useState(false);
+
+    useLockBodyScroll(isEndEarlyModalOpen);
 
     // Timers
     const [questionSecondsElapsed, setQuestionSecondsElapsed] = useState(0);
@@ -392,58 +395,56 @@ function Interview() {
                             />
                         )}
                     </div>
-                )}
-
-                {/* STAGE 2: LIVE INTERVIEW ROOM */}
+                )}                {/* STAGE 2: LIVE INTERVIEW ROOM */}
                 {stage === "interview" && (
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                         {/* Session HUD / Top Navigation */}
-                        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
-                            <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
+                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">
                                         Q{currentQuestion + 1}
                                     </div>
-                                    <div>
-                                        <div className="flex flex-wrap items-center gap-2">
-                                            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                                                Question {currentQuestion + 1} of {questions.length}
+                                    <div className="min-w-0">
+                                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                            <span className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                                                Q{currentQuestion + 1} of {questions.length}
                                             </span>
-                                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                                            <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 truncate">
                                                 {questions[currentQuestion]?.skill}
                                             </span>
                                             {interviewConfig?.difficulty && (
-                                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
+                                                <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">
                                                     {interviewConfig.difficulty}
                                                 </span>
                                             )}
                                         </div>
-                                        <h3 className="text-xs sm:text-sm font-bold text-slate-800 mt-0.5">
+                                        <h3 className="text-xs sm:text-sm font-bold text-slate-800 mt-0.5 truncate">
                                             Target: {interviewConfig?.company || "Tech Interview"}
                                         </h3>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                                     {/* Per-Question Timer (if enabled) */}
                                     {interviewConfig?.perQuestionTimer > 0 && (
-                                        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold border ${
+                                        <div className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-extrabold border ${
                                             questionSecondsRemaining <= 30
                                                 ? "bg-rose-50 text-rose-600 border-rose-200 animate-pulse"
                                                 : "bg-amber-50 text-amber-700 border-amber-200"
                                         }`}>
-                                            <Hourglass size={14} className={questionSecondsRemaining <= 30 ? "text-rose-500" : "text-amber-600"} />
-                                            <span>Question: {formatTimer(questionSecondsRemaining)}</span>
+                                            <Hourglass size={13} className={questionSecondsRemaining <= 30 ? "text-rose-500" : "text-amber-600"} />
+                                            <span>Q: {formatTimer(questionSecondsRemaining)}</span>
                                         </div>
                                     )}
 
                                     {/* Global Session Countdown Clock */}
-                                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold border ${
+                                    <div className={`flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-extrabold border ${
                                         totalSecondsRemaining <= 180
                                             ? "bg-red-50 text-red-600 border-red-200 animate-pulse"
                                              : "bg-slate-100 text-slate-700 border-slate-200"
                                     }`}>
-                                        <Timer size={14} className={totalSecondsRemaining <= 180 ? "text-red-500" : "text-blue-600"} />
+                                        <Timer size={13} className={totalSecondsRemaining <= 180 ? "text-red-500" : "text-blue-600"} />
                                         <span>Total: {formatTimer(totalSecondsRemaining)}</span>
                                     </div>
 
@@ -451,76 +452,69 @@ function Interview() {
                                     <button
                                         type="button"
                                         onClick={() => setIsEndEarlyModalOpen(true)}
-                                        className="px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition flex items-center gap-1"
+                                        className="px-2.5 py-1 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] sm:text-xs font-bold transition flex items-center gap-1"
                                     >
-                                        <LogOut size={13} />
-                                        <span className="hidden sm:inline">End & Submit</span>
+                                        <LogOut size={12} />
+                                        <span>End</span>
                                     </button>
 
                                     {/* Progress percentage */}
-                                    <span className="text-xs font-bold text-blue-600">
+                                    <span className="text-xs font-bold text-blue-600 ml-1">
                                         {progressPercent}%
                                     </span>
                                 </div>
                             </div>
 
                             {/* Progress bar */}
-                            <div className="w-full bg-slate-100 rounded-full h-2 mt-5 overflow-hidden">
+                            <div className="w-full bg-slate-100 rounded-full h-1.5 sm:h-2 mt-3 sm:mt-4 overflow-hidden">
                                 <div
-                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2 rounded-full transition-all duration-300"
+                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full rounded-full transition-all duration-300"
                                     style={{ width: `${progressPercent}%` }}
                                 />
                             </div>
                         </div>
 
                         {/* Question Card */}
-                        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-sm relative overflow-hidden">
                             {/* Question Keyword Metadata Ribbon */}
-                            <div className="flex flex-wrap items-center gap-2 mb-4">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs">
-                                    <Building2 size={12} className="text-blue-600" />
-                                    <span>Company: {interviewConfig?.company || "Tech Interview"}</span>
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+                                    <Building2 size={11} className="text-blue-600" />
+                                    <span>{interviewConfig?.company || "Tech Interview"}</span>
                                 </span>
 
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs">
-                                    <Gauge size={12} className="text-purple-600" />
-                                    <span>Tier: {interviewConfig?.difficulty || "Mid-Level"}</span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">
+                                    <Gauge size={11} className="text-purple-600" />
+                                    <span>{interviewConfig?.difficulty || "Mid-Level"}</span>
                                 </span>
 
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-2xs">
-                                    <Layers size={12} className="text-indigo-600" />
-                                    <span>Track: {interviewConfig?.track || "Full-Stack"}</span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                    <Layers size={11} className="text-indigo-600" />
+                                    <span>{interviewConfig?.track || "Full-Stack"}</span>
                                 </span>
 
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs">
-                                    <Code2 size={12} className="text-emerald-600" />
-                                    <span>Skill: {questions[currentQuestion]?.skill || "General"}</span>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <Code2 size={11} className="text-emerald-600" />
+                                    <span>{questions[currentQuestion]?.skill || "General"}</span>
                                 </span>
-
-                                {interviewConfig?.perQuestionTimer > 0 && (
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs">
-                                        <Clock size={12} className="text-amber-600" />
-                                        <span>Target: {interviewConfig.perQuestionTimer / 60}m</span>
-                                    </span>
-                                )}
                             </div>
 
-                            <div className="flex items-start justify-between gap-4">
-                                <div className="space-y-2">
-                                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-relaxed tracking-tight">
+                            <div className="flex items-start justify-between gap-3 sm:gap-4">
+                                <div className="space-y-2 flex-1">
+                                    <h2 className="text-base sm:text-xl md:text-2xl font-extrabold text-slate-900 leading-snug tracking-tight">
                                         {questions[currentQuestion]?.question}
                                     </h2>
                                 </div>
 
-                                <div className="flex items-center gap-2 shrink-0">
+                                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                                     {/* AI Hint button */}
                                     <button
                                         type="button"
                                         onClick={handleRequestHint}
                                         title="Request a subtle clue"
-                                        className="p-3 rounded-2xl border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-all flex items-center gap-1.5 text-xs font-bold"
+                                        className="p-2 sm:p-2.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 transition-all flex items-center gap-1 text-xs font-bold min-h-[38px]"
                                     >
-                                        <Lightbulb size={17} className="text-amber-600" />
+                                        <Lightbulb size={16} className="text-amber-600" />
                                         <span className="hidden sm:inline">Hint</span>
                                     </button>
 
@@ -529,87 +523,87 @@ function Interview() {
                                         type="button"
                                         onClick={handleSpeakQuestion}
                                         title={isSpeaking ? "Stop Voice" : "Listen to Question"}
-                                        className={`p-3 rounded-2xl border transition-all ${
+                                        className={`p-2 sm:p-2.5 rounded-xl border transition-all min-h-[38px] flex items-center justify-center ${
                                             isSpeaking
                                                 ? "bg-blue-600 text-white border-blue-600 animate-pulse"
                                                 : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-blue-50 hover:text-blue-600"
                                         }`}
                                     >
-                                        {isSpeaking ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                                        {isSpeaking ? <VolumeX size={16} /> : <Volume2 size={16} />}
                                     </button>
                                 </div>
                             </div>
 
                             {/* AI Hint Drawer */}
                             {hintData.isOpen && (
-                                <div className="mt-5 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs animate-in fade-in slide-in-from-top-2 duration-150 relative">
+                                <div className="mt-4 p-3.5 sm:p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 text-xs animate-in fade-in slide-in-from-top-2 duration-150 relative">
                                     <button
                                         onClick={() => setHintData({ ...hintData, isOpen: false })}
-                                        className="absolute top-3 right-3 text-amber-600 hover:text-amber-800"
+                                        className="absolute top-3 right-3 text-amber-600 hover:text-amber-800 p-1"
                                     >
                                         <X size={15} />
                                     </button>
-                                    <div className="flex items-center gap-2 font-bold mb-1 text-amber-800">
-                                        <Lightbulb size={15} />
-                                        <span>AI Interviewer Hint (No Penalty):</span>
+                                    <div className="flex items-center gap-1.5 font-bold mb-1 text-amber-800 pr-6">
+                                        <Lightbulb size={14} />
+                                        <span>AI Hint (No Penalty):</span>
                                     </div>
                                     {hintData.loading ? (
                                         <div className="flex items-center gap-2 text-amber-700 py-1">
                                             <Loader2 size={14} className="animate-spin" />
-                                            <span>Synthesizing tailored hint...</span>
+                                            <span>Synthesizing tailored clue...</span>
                                         </div>
                                     ) : (
-                                        <p className="leading-relaxed">{hintData.text}</p>
+                                        <p className="leading-relaxed break-words">{hintData.text}</p>
                                     )}
                                 </div>
                             )}
                         </div>
 
                         {/* Interactive Multi-Modal Workspace Tabs */}
-                        <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar">
+                        <div className="flex items-center gap-1.5 sm:gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar">
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("verbal")}
-                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 min-h-[40px] ${
                                     activeWorkspaceTab === "verbal"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
-                                <FileText size={15} />
-                                <span><span className="hidden sm:inline">Verbal & </span>Written Explanation</span>
+                                <FileText size={14} />
+                                <span>Verbal<span className="hidden sm:inline"> & Written</span></span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("code")}
-                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 min-h-[40px] ${
                                     activeWorkspaceTab === "code"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
-                                <Code2 size={15} />
-                                <span>Code Compiler<span className="hidden sm:inline"> & Big-O</span></span>
+                                <Code2 size={14} />
+                                <span>Code Compiler</span>
                             </button>
 
                             <button
                                 type="button"
                                 onClick={() => setActiveWorkspaceTab("whiteboard")}
-                                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 ${
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl text-xs font-bold transition shrink-0 min-h-[40px] ${
                                     activeWorkspaceTab === "whiteboard"
                                         ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                                 }`}
                             >
-                                <Layers size={15} />
-                                <span><span className="hidden sm:inline">System Design </span>Whiteboard</span>
+                                <Layers size={14} />
+                                <span>Whiteboard</span>
                             </button>
                         </div>
 
                         {/* TAB 1: Verbal & Speech Response */}
                         {activeWorkspaceTab === "verbal" && (
-                            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+                            <div className="bg-white rounded-3xl p-4 sm:p-7 md:p-8 border border-slate-200 shadow-sm space-y-3 sm:space-y-4">
                                 <div className="flex items-center justify-between">
                                     <label className="text-xs font-bold uppercase tracking-wider text-slate-500">
                                         Your Technical Explanation
@@ -619,7 +613,7 @@ function Interview() {
                                             type="button"
                                             onClick={handlePolishSpeech}
                                             disabled={!answer.trim()}
-                                            className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 disabled:opacity-40 flex items-center gap-1 transition"
+                                            className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 disabled:opacity-40 flex items-center gap-1 transition p-1"
                                         >
                                             <Wand2 size={13} />
                                             <span>Polish Speech</span>
@@ -636,23 +630,23 @@ function Interview() {
                                         value={answer}
                                         onChange={(e) => setAnswer(e.target.value)}
                                         placeholder="Explain your approach, architectural trade-offs, algorithms, and edge cases clearly..."
-                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition leading-relaxed resize-none"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition leading-relaxed resize-none"
                                     />
 
                                     {interimTranscript && (
-                                        <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-blue-800 italic mt-2 animate-pulse">
+                                        <div className="p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-xs text-blue-800 italic mt-2 animate-pulse break-words">
                                             <span className="font-bold">Live voice input:</span> "{interimTranscript}"
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Voice Controls & Actions */}
-                                <div className="flex items-center justify-between pt-2">
+                                <div className="flex items-center justify-between pt-1">
                                     {isSpeechSupported ? (
                                         <button
                                             type="button"
                                             onClick={toggleVoiceRecording}
-                                            className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all ${
+                                            className={`px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all min-h-[44px] ${
                                                 isListening
                                                     ? "bg-red-600 text-white animate-pulse shadow-md shadow-red-500/30"
                                                     : "bg-slate-100 hover:bg-slate-200 text-slate-700"
@@ -694,17 +688,17 @@ function Interview() {
                         )}
 
                         {/* Submit & Next Button Bar */}
-                        <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
-                            <div className="flex items-center gap-3">
+                        <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 pt-3 sm:pt-4">
+                            <div className="flex items-center justify-between sm:justify-start gap-3">
                                 <div className="flex items-center gap-1.5 text-slate-500 text-xs font-medium">
-                                    <Clock size={14} />
-                                    <span>Spent on this question: {formatTimer(questionSecondsElapsed)}</span>
+                                    <Clock size={13} />
+                                    <span>Time: {formatTimer(questionSecondsElapsed)}</span>
                                 </div>
 
                                 <button
                                     type="button"
                                     onClick={() => setIsEndEarlyModalOpen(true)}
-                                    className="px-3.5 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl text-xs font-bold transition border border-rose-200/80"
+                                    className="px-3 py-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl text-xs font-bold transition border border-rose-200/80 min-h-[38px] flex items-center"
                                 >
                                     End & Submit Early
                                 </button>
@@ -714,7 +708,7 @@ function Interview() {
                                 type="button"
                                 onClick={handleNext}
                                 disabled={submitting}
-                                className="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-blue-500/25 transition-all flex items-center gap-2"
+                                className="w-full sm:w-auto px-6 sm:px-8 py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2 min-h-[48px]"
                             >
                                 {submitting ? (
                                     <>
@@ -728,7 +722,7 @@ function Interview() {
                                     </>
                                 ) : (
                                     <>
-                                        <span>Finish & Generate Comprehensive Report</span>
+                                        <span>Finish & Generate Report</span>
                                         <CheckCircle2 size={16} />
                                     </>
                                 )}
@@ -739,33 +733,39 @@ function Interview() {
 
                 {/* END INTERVIEW EARLY CONFIRMATION MODAL */}
                 {isEndEarlyModalOpen && (
-                    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-4">
-                        <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-150 text-slate-900">
+                    <div 
+                        className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+                        onClick={(e) => {
+                            if (e.target === e.currentTarget) setIsEndEarlyModalOpen(false);
+                        }}
+                    >
+                        <div className="bg-white rounded-3xl max-w-md w-full p-4 sm:p-7 md:p-8 shadow-2xl border border-slate-200 relative animate-in fade-in zoom-in-95 duration-150 text-slate-900 max-h-[calc(100dvh-1.5rem)] overflow-y-auto my-auto">
                             <button
                                 onClick={() => setIsEndEarlyModalOpen(false)}
-                                className="absolute top-6 right-6 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+                                className="absolute top-4 sm:top-6 right-4 sm:right-6 p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition min-w-[36px] min-h-[36px] flex items-center justify-center"
+                                aria-label="Cancel and return to interview"
                             >
                                 <X size={18} />
                             </button>
 
-                            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 border border-rose-100">
-                                <LogOut size={22} />
+                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-3 sm:mb-4 border border-rose-100">
+                                <LogOut size={20} />
                             </div>
 
-                            <h3 className="text-xl font-extrabold text-slate-900">
+                            <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 pr-6">
                                 End Interview Early & Submit?
                             </h3>
                             <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
                                 You are currently on Question {currentQuestion + 1} of {questions.length}. We will finalize your session and evaluate all answered questions with Gemini AI.
                             </p>
 
-                            <div className="mt-6 space-y-2.5">
+                            <div className="mt-5 sm:mt-6 space-y-2.5">
                                 {(answer.trim() || codeContent.trim()) && (
                                     <button
                                         type="button"
                                         disabled={endingEarly}
                                         onClick={() => handleEndEarly(true)}
-                                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2"
+                                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2 min-h-[44px]"
                                     >
                                         {endingEarly ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
                                         <span>Submit Current Answer & Finish Assessment</span>
@@ -776,7 +776,7 @@ function Interview() {
                                     type="button"
                                     disabled={endingEarly}
                                     onClick={() => handleEndEarly(false)}
-                                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2"
+                                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 min-h-[44px]"
                                 >
                                     <span>Finish Assessment Now</span>
                                 </button>
@@ -785,7 +785,7 @@ function Interview() {
                                     type="button"
                                     disabled={endingEarly}
                                     onClick={() => setIsEndEarlyModalOpen(false)}
-                                    className="w-full py-2.5 text-slate-500 hover:text-slate-800 text-xs font-bold transition"
+                                    className="w-full py-2.5 text-slate-500 hover:text-slate-800 text-xs font-bold transition min-h-[40px] flex items-center justify-center"
                                 >
                                     Cancel & Return to Question
                                 </button>

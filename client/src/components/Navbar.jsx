@@ -145,7 +145,7 @@ export default function Navbar() {
 
                         {/* Dropdown Menu */}
                         {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-64 bg-white rounded-3xl p-2 border border-slate-200 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                            <div className="absolute right-0 mt-2 w-60 sm:w-64 max-w-[calc(100vw-2rem)] bg-white rounded-3xl p-2 border border-slate-200 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
                                 <div className="p-3 border-b border-slate-100 mb-1">
                                     <p className="text-xs font-bold text-slate-900 truncate">{user?.name}</p>
                                     <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>

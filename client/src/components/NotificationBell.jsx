@@ -114,7 +114,7 @@ export default function NotificationBell() {
 
             {/* Notifications Dropdown Drawer */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl p-3 border border-slate-200 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="absolute -right-12 sm:right-0 mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-white rounded-3xl p-3 border border-slate-200 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="flex items-center justify-between p-3 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                             <h3 className="font-extrabold text-sm text-slate-900">Recruiter Activity</h3>
@@ -129,7 +129,7 @@ export default function NotificationBell() {
                             <button
                                 onClick={handleMarkAll}
                                 disabled={loading}
-                                className="text-[11px] font-bold text-blue-600 hover:text-blue-750 flex items-center gap-1 transition"
+                                className="text-[11px] font-bold text-blue-600 hover:text-blue-750 flex items-center gap-1 transition p-1"
                             >
                                 <CheckCheck size={13} />
                                 <span>Mark all read</span>
@@ -138,7 +138,7 @@ export default function NotificationBell() {
                     </div>
 
                     {/* Notifications List */}
-                    <div className="max-h-[360px] overflow-y-auto divide-y divide-slate-100 py-1">
+                    <div className="max-h-[calc(100dvh-12rem)] sm:max-h-[360px] overflow-y-auto divide-y divide-slate-100 py-1">
                         {notifications.length === 0 ? (
                             <div className="p-8 text-center">
                                 <div className="w-10 h-10 rounded-2xl bg-slate-50 text-slate-400 mx-auto flex items-center justify-center mb-2">

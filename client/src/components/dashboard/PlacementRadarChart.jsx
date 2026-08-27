@@ -5,13 +5,13 @@ export default function PlacementRadarChart({
         { axis: "Algorithms & DSA", value: 90 },
         { axis: "System Design", value: 95 },
         { axis: "Core Frameworks", value: 88 },
-        { axis: "Edge-Case Handling", value: 85 },
-        { axis: "Technical Articulation", value: 92 },
+        { axis: "Edge Cases", value: 85 },
+        { axis: "Articulation", value: 92 },
     ],
-    size = 280,
+    size = 300,
 }) {
     const center = size / 2;
-    const radius = center - 45;
+    const radius = center - 52;
     const totalAxes = data.length;
     const angleStep = (Math.PI * 2) / totalAxes;
 
@@ -36,20 +36,20 @@ export default function PlacementRadarChart({
     const rings = [0.25, 0.5, 0.75, 1.0];
 
     return (
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm flex flex-col items-center justify-between">
+        <div className="bg-white rounded-3xl p-4 sm:p-7 border border-slate-200 shadow-sm flex flex-col items-center justify-between w-full overflow-hidden">
             <div className="w-full flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2 text-indigo-600 font-extrabold text-xs uppercase tracking-wider">
-                    <Sparkles size={14} />
-                    <span>5-Axis Placement Readiness Radar</span>
+                <div className="flex items-center gap-1.5 text-indigo-600 font-extrabold text-[11px] sm:text-xs uppercase tracking-wider">
+                    <Sparkles size={14} className="shrink-0" />
+                    <span>5-Axis Readiness Radar</span>
                 </div>
-                <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    Google L5 Target
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 shrink-0">
+                    Google L5
                 </span>
             </div>
 
-            {/* SVG Radar */}
-            <div className="relative my-2 flex items-center justify-center">
-                <svg width={size} height={size} className="overflow-visible">
+            {/* Responsive SVG Radar with viewBox */}
+            <div className="relative my-2 w-full max-w-[260px] sm:max-w-[280px] aspect-square flex items-center justify-center">
+                <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full overflow-visible">
                     {/* Concentric polygon rings */}
                     {rings.map((ring, rIdx) => {
                         const ringPoints = data
@@ -115,7 +115,7 @@ export default function PlacementRadarChart({
                     {/* Axis Labels */}
                     {data.map((d, i) => {
                         const angle = i * angleStep - Math.PI / 2;
-                        const labelRadius = radius + 24;
+                        const labelRadius = radius + 22;
                         const lx = center + labelRadius * Math.cos(angle);
                         const ly = center + labelRadius * Math.sin(angle);
 

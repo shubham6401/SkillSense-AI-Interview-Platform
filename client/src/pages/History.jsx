@@ -158,34 +158,34 @@ function History() {
                             return (
                                 <div
                                     key={item._id}
-                                    className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200"
+                                    className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200"
                                 >
                                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                         <div className="space-y-2">
-                                            <div className="flex items-center gap-3">
-                                                <span className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center">
+                                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center">
                                                     #{filteredHistory.length - index}
                                                 </span>
-                                                <h3 className="text-base font-bold text-slate-900">
+                                                <h3 className="text-sm sm:text-base font-bold text-slate-900">
                                                     AI Mock Interview Session
                                                 </h3>
                                                 {item.endedAt ? (
-                                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">
-                                                        <CheckCircle2 size={12} />
+                                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+                                                        <CheckCircle2 size={11} />
                                                         Completed
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full">
-                                                        <Clock size={12} />
+                                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full">
+                                                        <Clock size={11} />
                                                         In Progress
                                                     </span>
                                                 )}
                                             </div>
 
-                                            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-slate-500">
+                                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500">
                                                 <div className="flex items-center gap-1.5">
-                                                    <Calendar size={14} className="text-slate-400" />
-                                                    <span>
+                                                    <Calendar size={13} className="text-slate-400" />
+                                                    <span className="text-[11px] sm:text-xs">
                                                         {new Date(item.createdAt).toLocaleString("en-US", {
                                                             dateStyle: "medium",
                                                             timeStyle: "short",
@@ -194,23 +194,23 @@ function History() {
                                                 </div>
 
                                                 <div className="flex items-center gap-1.5">
-                                                    <FileText size={14} className="text-slate-400" />
-                                                    <span>{item.answers?.length || 0} Questions Evaluated</span>
+                                                    <FileText size={13} className="text-slate-400" />
+                                                    <span className="text-[11px] sm:text-xs">{item.answers?.length || 0} Questions Evaluated</span>
                                                 </div>
 
                                                 <div className="flex items-center gap-1.5 font-semibold text-blue-600">
-                                                    <Award size={14} />
-                                                    <span>Avg: {avgScore} / 10</span>
+                                                    <Award size={13} />
+                                                    <span className="text-[11px] sm:text-xs">Avg: {avgScore} / 10</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center gap-2 self-end md:self-auto">
+                                        <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
                                             <button
                                                 onClick={(e) => handleDelete(e, item._id)}
                                                 disabled={isDeleting}
                                                 title="Delete interview record"
-                                                className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition border border-transparent hover:border-red-100"
+                                                className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition border border-transparent hover:border-red-100 min-w-[38px] min-h-[38px] flex items-center justify-center"
                                             >
                                                 {isDeleting ? (
                                                     <RefreshCw size={16} className="animate-spin text-red-500" />
@@ -221,7 +221,7 @@ function History() {
 
                                             <button
                                                 onClick={() => navigate(`/report/${item._id}`)}
-                                                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-1.5"
+                                                className="flex-1 sm:flex-initial px-4 sm:px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 min-h-[38px]"
                                             >
                                                 <span>View Report</span>
                                                 <ArrowRight size={14} />
