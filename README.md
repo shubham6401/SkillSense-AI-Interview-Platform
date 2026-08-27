@@ -1,5 +1,9 @@
 # 🧠 SkillSense.AI — Full-Stack Technical Interview & Code Execution Platform
 
+[![Live Demo on Vercel](https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://mern-skill-sense-ai-interview-platf.vercel.app)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shubham6401/SkillSense-AI-Interview-Platform)
+
+> 🚀 **Live Production Application:** [https://mern-skill-sense-ai-interview-platf.vercel.app](https://mern-skill-sense-ai-interview-platf.vercel.app)  
 > **Google & FAANG-Calibrated Technical Interview Platform** featuring an isolated multi-language Remote Code Execution (RCE) compiler, real-time AI Big-O algorithmic complexity analysis, interactive system design whiteboards, dynamic Google Gemini interview simulation, and an advanced recruiter talent pipeline.
 
 ---

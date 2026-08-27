@@ -32,7 +32,7 @@
 ### **SkillSense.AI — AI-Powered Technical Interview & Code Execution Platform**
 *June 2026 – August 2026*  
 **Tech Stack:** React 19, Tailwind CSS v4, Node.js, Express.js, MongoDB Atlas, Google Gemini AI, Axios, JWT  
-**Links:** 🔗 **[Live Demo](https://skillsense-ai.onrender.com)** | 📂 **[GitHub Repository](https://github.com/shubham6401/SkillSense-AI-Interview-Platform)**
+**Links:** 🔗 **[Live Demo](https://mern-skill-sense-ai-interview-platf.vercel.app)** | 📂 **[GitHub Repository](https://github.com/shubham6401/SkillSense-AI-Interview-Platform)**
 * Engineered a production-ready AI mock interview platform featuring an isolated multi-language **Remote Code Execution (RCE)** sandbox (Python, JS, C++, Java, Go) running automated test assertions with **sub-100ms** latency.
 * Built an automated **AI Big-O Complexity Analyzer** powered by Google Gemini 2.5 to compute asymptotic Time/Space complexity and detect quadratic bottlenecks ($O(N^2)$ loops, unindexed lookups).
 * Developed an interactive **System Design Architecture Whiteboard** with draggable cloud primitives (Redis, Kafka, Nginx, MongoDB) and freehand canvas drawing for senior-level engineering interviews.
